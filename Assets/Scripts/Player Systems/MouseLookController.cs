@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.InputHandling;
 using UnityEngine;
 
-namespace Project
+namespace Project.PlayerSystems
 {
 	[RequireComponent(typeof(PlayerInputHandler))]
 	public class MouseLookController : MonoBehaviour

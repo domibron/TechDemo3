@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.InputHandling;
 using UnityEngine;
 
-namespace Project
+namespace Project.PlayerSystems
 {
+
+
 	[RequireComponent(typeof(PlayerInputHandler), typeof(CharacterController))]
 	public class CCMovementController : MonoBehaviour
 	{
-		// Statics
-		public static int PLAYERLAYER = 3;
 
 		//Publics
 		[Header("Legs")]
@@ -134,7 +135,7 @@ namespace Project
 			Vector3 tartgetPos = transform.position + new Vector3(0, -(_characterController.height / 2), 0);
 			float targetRad = _characterController.radius;
 
-			_isGrounded = Physics.CheckSphere(tartgetPos, targetRad, ~(1 << PLAYERLAYER));
+			_isGrounded = Physics.CheckSphere(tartgetPos, targetRad, StaticData.LAYER_WITH_ONLY_PLAYER_IGNORED);
 		}
 		#endregion
 
@@ -198,7 +199,7 @@ namespace Project
 				Debug.DrawLine(topPoint, transform.position, Color.red);
 				Debug.DrawLine(bottomPoint, transform.position, Color.blue);
 
-				if (Physics.SphereCast(transform.position, _characterController.radius, transform.up, out RaycastHit hit, _standingHeight, ~(1 << PLAYERLAYER)))
+				if (Physics.SphereCast(transform.position, _characterController.radius, transform.up, out RaycastHit hit, _standingHeight, StaticData.LAYER_WITH_ONLY_PLAYER_IGNORED))
 				{
 					_stuckCrouched = true;
 				}

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project
+namespace Project.WeaponSystems
 {
 
-	[CreateAssetMenu(menuName = "TechDemo3/WeaponSOBase")]
+	[CreateAssetMenu(menuName = "Weapons/WeaponSOBase")]
 	public class WeaponSOBase : ScriptableObject
 	{
 		public string WeaponName = "Weapon Name";
@@ -13,9 +13,5 @@ namespace Project
 		public float Damage = 10f;
 
 		public float FireRate = 5f;
-
-		public int MaxAmmo = 220;
-
-		public int MaxAmmoInMagazine = 30;
 	}
 }

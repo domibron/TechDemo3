@@ -7,6 +7,8 @@ namespace Project.WeaponSystems
 {
 	public abstract class BaseWeapon : MonoBehaviour, IWeapon
 	{
+		public abstract string DisplayName { get; }
+		public abstract string AmmoDisplay { get; }
 
 		void IWeapon.Aim()
 		{
@@ -23,6 +25,11 @@ namespace Project.WeaponSystems
 			ReloadWeapon();
 		}
 
+		void IWeapon.FireKeyUpdate(bool state)
+		{
+			FireKeyUpdate(state);
+		}
+
 
 
 		protected abstract void SetUpWeapon();
@@ -34,6 +41,9 @@ namespace Project.WeaponSystems
 		protected abstract void FireWeapon();
 
 		protected abstract void ReloadWeapon();
+
+		protected abstract void FireKeyUpdate(bool state);
+
 
 	}
 }

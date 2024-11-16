@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Project.Health;
+using Project.HealthSystems;
 using UnityEngine;
 
 namespace Project.WeaponSystems
 {
 	public class MeleeWeapon : BaseWeapon
 	{
-		public MeleeWeaponSO meleeWeaponSO;
+		public MeleeWeaponSO WeaponSO;
 
 		// Privates
+		private IWeaponProjectile weaponProjectile;
+
 		private float _timeUntilNextAttack = 0;
 
+		public override string DisplayName { get => WeaponSO.name; }
+		public override string AmmoDisplay { get => ""; }
 
 		void Start()
 		{
@@ -22,7 +26,7 @@ namespace Project.WeaponSystems
 		{
 			if (_timeUntilNextAttack >= 0)
 			{
-				_timeUntilNextAttack -= Time.deltaTime * meleeWeaponSO.FireRate;
+				_timeUntilNextAttack -= Time.deltaTime * WeaponSO.FireRate;
 			}
 		}
 
@@ -37,19 +41,21 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, meleeWeaponSO.Range, StaticData.LAYER_WITH_ONLY_PLAYER_IGNORED))
-				{
-					hit.collider.GetComponent<IHealth>()?.RemoveHealth(meleeWeaponSO.Damage);
-				}
+				weaponProjectile.FireProjectile(WeaponSO.Damage, WeaponSO.Range);
 			}
 		}
 
 		protected override void ReloadWeapon()
 		{
-			// inspect.
+			// inspect. or dont.
 		}
 
 		protected override void SetUpWeapon()
+		{
+			weaponProjectile = GetComponent<IWeaponProjectile>();
+		}
+
+		protected override void FireKeyUpdate(bool state)
 		{
 
 		}

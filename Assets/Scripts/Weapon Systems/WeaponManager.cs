@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Project.InputHandling;
 using UnityEngine;
+using TMPro;
 
 namespace Project.WeaponSystems
 {
@@ -16,6 +17,12 @@ namespace Project.WeaponSystems
 
 		public Transform TargetWeaponParent;
 
+
+		// TODO move into another manager, this is UI not weapon inventory manager.
+		public TMP_Text WeaponNameDisplay;
+		public TMP_Text WeaponAmmoDisplay;
+
+
 		//Privates
 		private PlayerInputHandler _playerInputHandler;
 
@@ -28,21 +35,28 @@ namespace Project.WeaponSystems
 
 		void Update()
 		{
-			if (_playerInputHandler.GetKey(KeyCode.Mouse0) && CurrentSelectedWeapon != null)
+			if (_playerInputHandler.GetKey(_playerInputHandler.FireKey) && CurrentSelectedWeapon != null)
 			{
 				CurrentSelectedWeapon.Fire();
 			}
 
-			if (_playerInputHandler.GetKey(KeyCode.Mouse1) && CurrentSelectedWeapon != null)
+			if (_playerInputHandler.GetKey(_playerInputHandler.AimKey) && CurrentSelectedWeapon != null)
 			{
 				CurrentSelectedWeapon.Aim();
 			}
 
-			if (_playerInputHandler.GetKey(KeyCode.R) && CurrentSelectedWeapon != null)
+			if (_playerInputHandler.GetKey(_playerInputHandler.ReloadKey) && CurrentSelectedWeapon != null)
 			{
 				CurrentSelectedWeapon.RPressed();
 			}
 
+			if (CurrentSelectedWeapon != null)
+			{
+				CurrentSelectedWeapon.FireKeyUpdate(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
+			}
+
+			// TODO move into another manager, this is UI not weapon inventory manager.
+			UpdateDisplays(); // Updates the display
 
 
 			// weapon switching.
@@ -56,7 +70,6 @@ namespace Project.WeaponSystems
 
 
 			if (WeaponsInInventory.Count <= 0) return;
-
 
 
 			// weapons
@@ -128,6 +141,20 @@ namespace Project.WeaponSystems
 					WeaponsInInventory[i].SetActive(false);
 				}
 			}
+		}
+
+		// TODO move into another manager, this is UI not weapon inventory manager.
+		private void UpdateDisplays()
+		{
+			if (CurrentSelectedWeapon == null)
+			{
+				WeaponNameDisplay.text = "Nothing";
+				WeaponAmmoDisplay.text = "";
+				return;
+			}
+
+			WeaponNameDisplay.text = CurrentSelectedWeapon.DisplayName;
+			WeaponAmmoDisplay.text = CurrentSelectedWeapon.AmmoDisplay;
 		}
 
 		public void EquipWeapon(GameObject prefab, int targetSlot)

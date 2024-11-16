@@ -135,7 +135,7 @@ namespace Project.PlayerSystems
 			Vector3 tartgetPos = transform.position + new Vector3(0, -(_characterController.height / 2), 0);
 			float targetRad = _characterController.radius;
 
-			_isGrounded = Physics.CheckSphere(tartgetPos, targetRad, StaticData.LAYER_WITH_ONLY_PLAYER_IGNORED);
+			_isGrounded = Physics.CheckSphere(tartgetPos, targetRad, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS);
 		}
 		#endregion
 
@@ -199,7 +199,7 @@ namespace Project.PlayerSystems
 				Debug.DrawLine(topPoint, transform.position, Color.red);
 				Debug.DrawLine(bottomPoint, transform.position, Color.blue);
 
-				if (Physics.SphereCast(transform.position, _characterController.radius, transform.up, out RaycastHit hit, _standingHeight, StaticData.LAYER_WITH_ONLY_PLAYER_IGNORED))
+				if (Physics.SphereCast(transform.position, _characterController.radius, transform.up, out RaycastHit hit, _standingHeight, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
 					_stuckCrouched = true;
 				}

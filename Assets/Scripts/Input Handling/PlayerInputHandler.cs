@@ -8,6 +8,10 @@ namespace Project.InputHandling
 	public class PlayerInputHandler : MonoBehaviour
 	{
 
+		public KeyCode FireKey = KeyCode.Mouse0;
+		public KeyCode AimKey = KeyCode.Mouse1;
+		public KeyCode ReloadKey = KeyCode.R;
+
 		public Vector3 GetMovementAsVector3()
 		{
 			return new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));

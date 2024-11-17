@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f47182921e169a4bb8022d2c80b40a3, type: 3}
-  m_Name: TestFireable
+  m_Name: MachineGun
   m_EditorClassIdentifier: 
-  WeaponName: Test Weapon
-  Damage: 10
-  FireRate: 10
-  MaxAmmo: 220
-  MagazineSize: 30
-  ReloadSpeed: 1
-  FireSelect: 2
+  WeaponName: Machine Gun
+  Damage: 20
+  FireRate: 9
+  MaxAmmo: 360
+  MagazineSize: 60
+  ReloadSpeed: 5
+  FireSelect: 0
   FireMode: 0
   BurstAmmount: 3

@@ -9,10 +9,11 @@ namespace Project.WeaponSystems
 		public string DisplayName { get; }
 		public string AmmoDisplay { get; }
 
-		public void Fire();
-		public void Aim();
-		public void RPressed();
+		public void FireKeyHeld(bool state);
+		public void AimKeyHeld(bool state);
+		public void ReloadKeyPressed();
+		public void SpecialKeyPressed();
 
-		public void FireKeyUpdate(bool state);
+		// public void FireKeyUpdate(bool state);
 	}
 }

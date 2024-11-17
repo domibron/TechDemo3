@@ -7,6 +7,9 @@ namespace Project.WeaponSystems
 {
 	public class MultiProjectile : MonoBehaviour, IWeaponProjectile
 	{
+		public static float DOUBLE_OF_PI = 6.28318530718f;
+
+
 		public int ProjectileAmmount = 8;
 
 		public float ProjectileSpread = 0.1f;
@@ -22,27 +25,27 @@ namespace Project.WeaponSystems
 		{
 
 			// centre Bullet
-			int BulletAmmount = ProjectileAmmount;
+			int bulletAmmount = ProjectileAmmount;
 
 			if (CentreProjectile)
 			{
-				if (Physics.Raycast(transform.position, transform.forward, out RaycastHit CentreHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
+				if (Physics.Raycast(transform.position, transform.forward, out RaycastHit centreHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
-					CentreHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+					centreHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
 				}
 
 				Debug.DrawRay(transform.position, transform.forward * range, Color.red, 10);
 
-				BulletAmmount--;
+				bulletAmmount--;
 			}
 
 			Vector3 randomPoint;
 			Vector3 rayDirection;
 
-			float percentageDist = 1f / BulletAmmount;
+			float percentageDist = 1f / bulletAmmount;
 
 
-			for (int i = 0; i <= BulletAmmount; ++i)
+			for (int i = 0; i <= bulletAmmount; ++i)
 			{
 				//create the ray with offset based around the sircle. add some noise for extra flair.
 				/*
@@ -73,8 +76,8 @@ namespace Project.WeaponSystems
 				// Damage is per pellet. O.O
 
 				randomPoint = GetOffsetAlongAImaginaryCircle(ProjectileSpread, percentageDist * i);
-				rayDirection = transform.forward;
-				rayDirection += randomPoint;
+				rayDirection = transform.forward + transform.right * randomPoint.x + transform.up * randomPoint.y;
+				// rayDirection += randomPoint;
 
 				//raycast
 				if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
@@ -92,7 +95,7 @@ namespace Project.WeaponSystems
 		private Vector3 GetOffsetAlongAImaginaryCircle(float radius, float percentInDecimal)
 		{
 			// what the... the math... its.... its... pain. How I figured this out, i dont even know.
-			float angleAsRad = Mathf.Lerp(0f, 6.28318530718f, percentInDecimal);
+			float angleAsRad = Mathf.Lerp(0f, DOUBLE_OF_PI, percentInDecimal);
 
 			// thinking about the imprecision of computers and making them do precise calcuations with floats scare me
 			return new Vector3(Mathf.Cos(angleAsRad) * radius, Mathf.Sin(angleAsRad) * radius);

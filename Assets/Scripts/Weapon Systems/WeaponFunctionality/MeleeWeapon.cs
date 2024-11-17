@@ -30,13 +30,15 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void AimWeapon()
+		protected override void AimWeapon(bool state)
 		{
 			// Should Do with animations.
 		}
 
-		protected override void FireWeapon()
+		protected override void FireWeapon(bool state)
 		{
+			if (!state) return;
+
 			if (_timeUntilNextAttack <= 0)
 			{
 				_timeUntilNextAttack = 1f;
@@ -45,9 +47,14 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void ReloadWeapon()
+		protected override void ReloadKeyPressed()
 		{
 			// inspect. or dont.
+		}
+
+		protected override void SpecialKeyPressed()
+		{
+			// Other special animtion.
 		}
 
 		protected override void SetUpWeapon()
@@ -55,9 +62,9 @@ namespace Project.WeaponSystems
 			weaponProjectile = GetComponent<IWeaponProjectile>();
 		}
 
-		protected override void FireKeyUpdate(bool state)
-		{
+		// protected override void FireKeyUpdate(bool state)
+		// {
 
-		}
+		// }
 	}
 }

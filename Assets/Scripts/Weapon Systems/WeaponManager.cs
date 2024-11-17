@@ -31,29 +31,36 @@ namespace Project.WeaponSystems
 		void Start()
 		{
 			SetUpWeaponManager();
+
+			Cursor.lockState = CursorLockMode.Locked;
 		}
 
 		void Update()
 		{
-			if (_playerInputHandler.GetKey(_playerInputHandler.FireKey) && CurrentSelectedWeapon != null)
+			if (CurrentSelectedWeapon != null)
 			{
-				CurrentSelectedWeapon.Fire();
-			}
-
-			if (_playerInputHandler.GetKey(_playerInputHandler.AimKey) && CurrentSelectedWeapon != null)
-			{
-				CurrentSelectedWeapon.Aim();
-			}
-
-			if (_playerInputHandler.GetKey(_playerInputHandler.ReloadKey) && CurrentSelectedWeapon != null)
-			{
-				CurrentSelectedWeapon.RPressed();
+				CurrentSelectedWeapon.FireKeyHeld(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
 			}
 
 			if (CurrentSelectedWeapon != null)
 			{
-				CurrentSelectedWeapon.FireKeyUpdate(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
+				CurrentSelectedWeapon.AimKeyHeld(_playerInputHandler.GetKey(_playerInputHandler.AimKey));
 			}
+
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.ReloadKey) && CurrentSelectedWeapon != null)
+			{
+				CurrentSelectedWeapon.ReloadKeyPressed();
+			}
+
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.SpecialWeaponKey) && CurrentSelectedWeapon != null)
+			{
+				CurrentSelectedWeapon.SpecialKeyPressed();
+			}
+
+			// if (CurrentSelectedWeapon != null)
+			// {
+			// 	CurrentSelectedWeapon.FireKeyUpdate(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
+			// }
 
 			// TODO move into another manager, this is UI not weapon inventory manager.
 			UpdateDisplays(); // Updates the display

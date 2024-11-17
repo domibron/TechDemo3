@@ -11,6 +11,7 @@ namespace Project.InputHandling
 		public KeyCode FireKey = KeyCode.Mouse0;
 		public KeyCode AimKey = KeyCode.Mouse1;
 		public KeyCode ReloadKey = KeyCode.R;
+		public KeyCode SpecialWeaponKey = KeyCode.B;
 
 		public Vector3 GetMovementAsVector3()
 		{

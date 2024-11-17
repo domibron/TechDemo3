@@ -19,13 +19,17 @@ namespace Project.WeaponSystems
 		// Privates
 		private IWeaponProjectile weaponProjectile;
 
+		private WeaponFireMode currentFireMode;
+
+		private IWeaponAudio weaponAudio;
+
 		private float _timeUntilNextAttack = 0;
 
 		private bool _firedShot = false;
 
-		private bool _firingBirst = false;
+		private bool _firingBurst = false;
 
-		private Coroutine _birstCoroutine;
+		private Coroutine _burstCoroutine;
 
 		private int _currentAmmoInWeapon;
 
@@ -35,6 +39,8 @@ namespace Project.WeaponSystems
 
 
 		private bool _isReloading = false;
+
+		private bool _isAiming = false;
 
 
 		void Start()
@@ -52,13 +58,28 @@ namespace Project.WeaponSystems
 
 		}
 
-		protected override void AimWeapon()
+		protected override void AimWeapon(bool state)
 		{
+			if (_isAiming != state)
+			{
+				_isAiming = state;
 
+
+				if (weaponAudio != null)
+				{
+					if (state) weaponAudio.Aim();
+					else weaponAudio.UnAim();
+				}
+			}
 		}
 
-		protected override void FireWeapon()
+		protected override void FireWeapon(bool state)
 		{
+			if (!state)
+			{
+				_firedShot = false;
+				return;
+			}
 
 			if (_currentAmmoInWeapon <= 0)
 			{
@@ -67,41 +88,74 @@ namespace Project.WeaponSystems
 				return;
 			}
 
-			if (_timeUntilNextAttack <= 0 && WeaponSO.FireMode == WeaponFireMode.Automatic)
-			{
-				_timeUntilNextAttack = 1f;
+			CheckAndFireAutomatic();
 
-				_currentAmmoInWeapon--;
+			CheckAndFireSemiAutomatic();
 
-				FireWeaponProjectile();
+			CheckAndFireBolt();
 
-			}
+			CheckAndFireBurst();
 
-			// For now, Bolt Action will do the same as a semi auto, just decrease the firerate.
-			else if (_timeUntilNextAttack <= 0 && (WeaponSO.FireMode == WeaponFireMode.SemiAutomatic || WeaponSO.FireMode == WeaponFireMode.BoltAction) && !_firedShot)
-			{
-				_timeUntilNextAttack = 1f;
 
-				_currentAmmoInWeapon--;
 
-				FireWeaponProjectile();
 
-			}
-
-			else if (_timeUntilNextAttack <= 0 && WeaponSO.FireMode == WeaponFireMode.Burst && !_firedShot)
-			{
-				_timeUntilNextAttack = 1f;
-
-				if (!_firingBirst) _birstCoroutine = StartCoroutine(FireBirst());
-			}
 
 
 			_firedShot = true;
 		}
 
-		protected virtual IEnumerator FireBirst()
+		protected virtual void CheckAndFireAutomatic()
 		{
-			_firingBirst = true;
+			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Automatic)
+			{
+				_timeUntilNextAttack = 1f;
+
+				_currentAmmoInWeapon--;
+
+				FireWeaponProjectile();
+
+			}
+		}
+
+		protected virtual void CheckAndFireSemiAutomatic()
+		{
+			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.SemiAutomatic && !_firedShot)
+			{
+				_timeUntilNextAttack = 1f;
+
+				_currentAmmoInWeapon--;
+
+				FireWeaponProjectile();
+
+			}
+		}
+
+		protected virtual void CheckAndFireBolt()
+		{
+			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.BoltAction && !_firedShot)
+			{
+				_timeUntilNextAttack = 1f;
+
+				_currentAmmoInWeapon--;
+
+				FireWeaponProjectile();
+
+			}
+		}
+
+		protected virtual void CheckAndFireBurst()
+		{
+			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Burst && !_firedShot)
+			{
+				_timeUntilNextAttack = 1f;
+
+				if (!_firingBurst) _burstCoroutine = StartCoroutine(FireBurst());
+			}
+		}
+
+		protected virtual IEnumerator FireBurst()
+		{
+			_firingBurst = true;
 
 			for (int i = 0; i < WeaponSO.BurstAmmount; i++)
 			{
@@ -114,7 +168,7 @@ namespace Project.WeaponSystems
 				yield return new WaitForSeconds(1 / WeaponSO.FireRate);
 			}
 
-			_firingBirst = false;
+			_firingBurst = false;
 		}
 
 		protected virtual void FireWeaponProjectile()
@@ -123,18 +177,40 @@ namespace Project.WeaponSystems
 
 			UpdateAmmoDisplay();
 
+			if (weaponAudio != null)
+			{
+				weaponAudio.Fire();
+			}
+
 			print("BANG!");
 		}
 
-		protected override void ReloadWeapon()
+		protected override void ReloadKeyPressed()
 		{
+			if (_isReloading || _currentAmmoInWeapon >= WeaponSO.MagazineSize + 1) return;
+
+			if (weaponAudio != null)
+			{
+				weaponAudio.Reload();
+			}
+
+			StartCoroutine(ReloadOverTime());
+		}
+
+		protected virtual IEnumerator ReloadOverTime()
+		{
+			_isReloading = true;
+
+			UpdateAmmoDisplay();
+
+			yield return new WaitForSeconds(WeaponSO.ReloadSpeed);
+
 			if (_currentAmmoPool >= WeaponSO.MagazineSize)
 			{
-
-				int ammountToTake = (WeaponSO.MagazineSize) - _currentAmmoInWeapon;
-
 				// We add one because we can chamber a round. we dont want to lose extra ammo either, because this is not a realistic game.
-				if (_currentAmmoInWeapon > 0) ammountToTake++;
+				int ammountToTake = (WeaponSO.MagazineSize + (_currentAmmoInWeapon > 0 ? 1 : 0)) - _currentAmmoInWeapon;
+
+				// if (_currentAmmoInWeapon > 0) ammountToTake++;
 
 				_currentAmmoInWeapon += ammountToTake;
 
@@ -146,6 +222,8 @@ namespace Project.WeaponSystems
 				_currentAmmoPool = 0;
 			}
 
+			_isReloading = false;
+
 			UpdateAmmoDisplay();
 		}
 
@@ -155,7 +233,17 @@ namespace Project.WeaponSystems
 
 			_currentAmmoPool = WeaponSO.MaxAmmo;
 
+			currentFireMode = WeaponSO.FireMode;
+
 			UpdateAmmoDisplay();
+
+
+			weaponAudio = GetComponent<IWeaponAudio>();
+
+			if (weaponAudio == null)
+			{
+				Debug.Log("You can add any scripts that inherit " + nameof(IWeaponAudio) + " to this to play sounds!");
+			}
 
 			weaponProjectile = GetComponent<IWeaponProjectile>();
 
@@ -167,18 +255,100 @@ namespace Project.WeaponSystems
 
 		protected virtual void UpdateAmmoDisplay()
 		{
-			if (_isReloading) _ammoDisplayString = $"Ammo:\n[Reloading]";
-			else _ammoDisplayString = $"Ammo:\n{_currentAmmoInWeapon} / {_currentAmmoPool}";
+			string convertFireModeIntoFunIcons = "";
+
+			if (currentFireMode == WeaponFireMode.Automatic)
+			{
+				convertFireModeIntoFunIcons = "AUTO";
+			}
+			else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+			{
+				convertFireModeIntoFunIcons = "SEMI";
+			}
+			else if (currentFireMode == WeaponFireMode.Burst)
+			{
+				convertFireModeIntoFunIcons = "BURST";
+			}
+			else if (currentFireMode == WeaponFireMode.BoltAction)
+			{
+				convertFireModeIntoFunIcons = "BOLT";
+			}
+
+			if (_isReloading) _ammoDisplayString = $"Ammo:\n[Reloading]\n[{convertFireModeIntoFunIcons}]";
+			else _ammoDisplayString = $"Ammo:\n{_currentAmmoInWeapon} / {_currentAmmoPool}\n[{convertFireModeIntoFunIcons}]";
+		}
+
+		protected override void SpecialKeyPressed()
+		{
+			ChangeWeaponFireMode();
+
+			if (weaponAudio != null)
+			{
+				weaponAudio.SpecialAction();
+			}
 		}
 
 		protected virtual void ChangeWeaponFireMode()
 		{
+			if (WeaponSO.FireSelect == WeaponFireSelect.None)
+			{
+				return;
+			}
+			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndAutomatic)
+			{
+				if (currentFireMode == WeaponFireMode.Automatic)
+				{
+					currentFireMode = WeaponFireMode.SemiAutomatic;
+				}
+				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				{
+					currentFireMode = WeaponFireMode.Automatic;
+				}
+			}
+			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndBurst)
+			{
+				if (currentFireMode == WeaponFireMode.Burst)
+				{
+					currentFireMode = WeaponFireMode.SemiAutomatic;
+				}
+				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				{
+					currentFireMode = WeaponFireMode.Burst;
+				}
+			}
+			else if (WeaponSO.FireSelect == WeaponFireSelect.BurstAndAutomatic)
+			{
+				if (currentFireMode == WeaponFireMode.Automatic)
+				{
+					currentFireMode = WeaponFireMode.Burst;
+				}
+				else if (currentFireMode == WeaponFireMode.Burst)
+				{
+					currentFireMode = WeaponFireMode.Automatic;
+				}
+			}
+			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndBurstAndAutomatic)
+			{
+				if (currentFireMode == WeaponFireMode.Automatic)
+				{
+					currentFireMode = WeaponFireMode.Burst;
+				}
+				else if (currentFireMode == WeaponFireMode.Burst)
+				{
+					currentFireMode = WeaponFireMode.SemiAutomatic;
+				}
+				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				{
+					currentFireMode = WeaponFireMode.Automatic;
+				}
+			}
 
+			UpdateAmmoDisplay();
 		}
 
-		protected override void FireKeyUpdate(bool state)
-		{
-			if (!state) _firedShot = false;
-		}
+		// protected override void FireKeyUpdate(bool state)
+		// {
+		// 	if (!state) _firedShot = false;
+		// }
 	}
 }

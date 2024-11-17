@@ -10,25 +10,30 @@ namespace Project.WeaponSystems
 		public abstract string DisplayName { get; }
 		public abstract string AmmoDisplay { get; }
 
-		void IWeapon.Aim()
+		void IWeapon.AimKeyHeld(bool state)
 		{
-			AimWeapon();
+			AimWeapon(state);
 		}
 
-		void IWeapon.Fire()
+		void IWeapon.FireKeyHeld(bool state)
 		{
-			FireWeapon();
+			FireWeapon(state);
 		}
 
-		void IWeapon.RPressed()
+		void IWeapon.ReloadKeyPressed()
 		{
-			ReloadWeapon();
+			ReloadKeyPressed();
 		}
 
-		void IWeapon.FireKeyUpdate(bool state)
+		void IWeapon.SpecialKeyPressed()
 		{
-			FireKeyUpdate(state);
+			SpecialKeyPressed();
 		}
+
+		// void IWeapon.FireKeyUpdate(bool state)
+		// {
+		// 	FireKeyUpdate(state);
+		// }
 
 
 
@@ -36,13 +41,15 @@ namespace Project.WeaponSystems
 
 
 
-		protected abstract void AimWeapon();
+		protected abstract void AimWeapon(bool state);
 
-		protected abstract void FireWeapon();
+		protected abstract void FireWeapon(bool state);
 
-		protected abstract void ReloadWeapon();
+		protected abstract void ReloadKeyPressed();
 
-		protected abstract void FireKeyUpdate(bool state);
+		protected abstract void SpecialKeyPressed();
+
+		// protected abstract void FireKeyUpdate(bool state);
 
 
 	}

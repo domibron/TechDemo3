@@ -12,7 +12,7 @@ namespace Project.WeaponSystems
 		/// <summary>
 		/// The name of the weapon and display name.
 		/// </summary>
-		[Header("Bae Weapon Settings"), Tooltip("The name of the weapon and display name.")]
+		[Header("Base Weapon Settings"), Tooltip("The name of the weapon and display name.")]
 		public string WeaponName = "Weapon Name";
 
 		/// <summary>
@@ -26,5 +26,11 @@ namespace Project.WeaponSystems
 		/// </summary>
 		[Tooltip("How Quick the weapon attacks.")]
 		public float FireRate = 5f;
+
+		/// <summary>
+		/// The max range of this melee weapon.
+		/// </summary>
+		[Tooltip("The max range of this melee weapon.")]
+		public float Range = 999f;
 	}
 }

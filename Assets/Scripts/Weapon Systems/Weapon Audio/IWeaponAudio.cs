@@ -8,7 +8,7 @@ namespace Project.WeaponSystems
 	{
 		public void Aim();
 		public void UnAim();
-		public void Fire();
+		public void Fire(bool state);
 		public void Reload();
 		public void SpecialAction();
 	}

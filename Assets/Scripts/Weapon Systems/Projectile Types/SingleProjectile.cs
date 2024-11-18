@@ -7,7 +7,7 @@ namespace Project.WeaponSystems
 {
 	public class SingleProjectile : MonoBehaviour, IWeaponProjectile
 	{
-		void IWeaponProjectile.FireProjectile(float damage, float range)
+		void IWeaponProjectile.StartFireProjectile(float damage, float range)
 		{
 			if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 			{
@@ -16,6 +16,11 @@ namespace Project.WeaponSystems
 
 
 			Debug.DrawRay(transform.position, transform.forward * range, Color.red, 10);
+		}
+
+		void IWeaponProjectile.EndFireProjectile()
+		{
+
 		}
 	}
 }

@@ -24,16 +24,9 @@ namespace Project.WeaponSystems
 		[Tooltip("This will make bullet ammount odd and greater than 2!")]
 		public bool CentreBullet = true;
 
-		void Update()
-		{
-			print(transform.name);
 
-			Debug.DrawRay(transform.position, transform.forward, Color.green);
 
-			Debug.DrawRay(transform.position, new Vector3(transform.forward.x * 0.5f, transform.forward.y, transform.forward.z * 0.5f), Color.red);
-		}
-
-		void IWeaponProjectile.FireProjectile(float damage, float range)
+		void IWeaponProjectile.StartFireProjectile(float damage, float range)
 		{
 			int bulletTotal = BulletAmmount;
 
@@ -110,7 +103,7 @@ namespace Project.WeaponSystems
 				// rayDirection = transform.forward;
 				// rayDirection += randomPoint;
 
-				print($"{randomPoint} | {transform.forward} = {rayDirection}");
+				//print($"{randomPoint} | {transform.forward} = {rayDirection}");
 
 				//raycast
 				if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
@@ -141,5 +134,10 @@ namespace Project.WeaponSystems
 		/*
 		I hate math :c i hate 3d space and directions and rotations, this is immence suffering.
 		*/
+
+		void IWeaponProjectile.EndFireProjectile()
+		{
+
+		}
 	}
 }

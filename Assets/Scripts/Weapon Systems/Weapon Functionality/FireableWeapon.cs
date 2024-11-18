@@ -8,20 +8,62 @@ namespace Project.WeaponSystems
 {
 	public class FireableWeapon : BaseWeapon
 	{
-		public static float DEFUALT_MAX_FIREABLE_WEAPON_RANGE = 1000;
+		public enum WeaponFireMode
+		{
+			Automatic,
+			SemiAutomatic,
+			BoltAction,
+			Burst,
+		}
 
-		public FireableWeaponSO WeaponSO;
+		public enum WeaponFireSelect
+		{
+			None,
+			SemiAndAutomatic,
+			BurstAndAutomatic,
+			SemiAndBurst,
+			SemiAndBurstAndAutomatic,
+		}
+
+		public static float DEFUALT_MAX_FIREABLE_WEAPON_RANGE = 1000;
 
 		public override string DisplayName => WeaponSO.name;
 
-		public override string AmmoDisplay => _ammoDisplayString;
+		public override string AmmoDisplay => weaponAmmo.AmmoString + "\n[" + currentFireMode + "]";
+
+
+
+		public WeaponSOBase WeaponSO;
+
+		/// <summary>
+		/// Weather the weapon can change the fire mode.
+		/// </summary>
+		[Tooltip("If the weapon can switch firemode, and what modes they can switch to.")]
+		public WeaponFireSelect FireSelect = WeaponFireSelect.None;
+
+		/// <summary>
+		/// How the weapon will fire.
+		/// </summary>
+		[Tooltip("How firing the weapon behaves.")]
+		public WeaponFireMode FireMode = WeaponFireMode.Automatic;
+
+		/// <summary>
+		/// Only used when FireSelect is set to WeaponFireMode.Burst. How many projectiles are fired.
+		/// </summary>
+		[Tooltip("Only used when " + nameof(WeaponFireMode) + " is set to " + nameof(WeaponFireMode.Burst) + ". How many projectiles are fired.")]
+		public int BurstAmmount = 3;
 
 		// Privates
 		private IWeaponProjectile weaponProjectile;
 
-		private WeaponFireMode currentFireMode;
 
 		private IWeaponAudio weaponAudio;
+
+		private IWeaponAmmo weaponAmmo;
+
+
+
+		private WeaponFireMode currentFireMode;
 
 		private float _timeUntilNextAttack = 0;
 
@@ -31,24 +73,18 @@ namespace Project.WeaponSystems
 
 		private Coroutine _burstCoroutine;
 
-		private int _currentAmmoInWeapon;
-
-		private int _currentAmmoPool;
-
-		private string _ammoDisplayString;
 
 
-		private bool _isReloading = false;
 
-		private bool _isAiming = false;
+		protected bool _isAiming = false;
 
 
-		void Start()
+		private void Start()
 		{
 			SetUpWeapon();
 		}
 
-		void Update()
+		private void Update()
 		{
 			if (_timeUntilNextAttack >= 0)
 			{
@@ -56,6 +92,19 @@ namespace Project.WeaponSystems
 			}
 
 
+		}
+
+		void OnDisable()
+		{
+			print("Disabled");
+			StopFiring();
+		}
+
+		private void StopFiring()
+		{
+			_firedShot = false;
+			if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
+			if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
 		}
 
 		protected override void AimWeapon(bool state)
@@ -77,11 +126,11 @@ namespace Project.WeaponSystems
 		{
 			if (!state)
 			{
-				_firedShot = false;
+				StopFiring();
 				return;
 			}
 
-			if (_currentAmmoInWeapon <= 0)
+			if (!weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
 
@@ -104,46 +153,48 @@ namespace Project.WeaponSystems
 			_firedShot = true;
 		}
 
-		protected virtual void CheckAndFireAutomatic()
+		private void CheckAndFireAutomatic()
 		{
 			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Automatic)
 			{
 				_timeUntilNextAttack = 1f;
 
-				_currentAmmoInWeapon--;
+				weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
 			}
 		}
 
-		protected virtual void CheckAndFireSemiAutomatic()
+		private void CheckAndFireSemiAutomatic()
 		{
 			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.SemiAutomatic && !_firedShot)
 			{
 				_timeUntilNextAttack = 1f;
 
-				_currentAmmoInWeapon--;
+				weaponAmmo.StartReducingAmmo();
+
 
 				FireWeaponProjectile();
 
 			}
 		}
 
-		protected virtual void CheckAndFireBolt()
+		private void CheckAndFireBolt()
 		{
 			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.BoltAction && !_firedShot)
 			{
 				_timeUntilNextAttack = 1f;
 
-				_currentAmmoInWeapon--;
+				weaponAmmo.StartReducingAmmo();
+
 
 				FireWeaponProjectile();
 
 			}
 		}
 
-		protected virtual void CheckAndFireBurst()
+		private void CheckAndFireBurst()
 		{
 			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Burst && !_firedShot)
 			{
@@ -153,15 +204,15 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected virtual IEnumerator FireBurst()
+		private IEnumerator FireBurst()
 		{
 			_firingBurst = true;
 
-			for (int i = 0; i < WeaponSO.BurstAmmount; i++)
+			for (int i = 0; i < BurstAmmount; i++)
 			{
-				if (_currentAmmoInWeapon <= 0) break;
+				if (!weaponAmmo.HasAmmo()) break;
 
-				_currentAmmoInWeapon--;
+				weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
@@ -171,71 +222,31 @@ namespace Project.WeaponSystems
 			_firingBurst = false;
 		}
 
-		protected virtual void FireWeaponProjectile()
+		private void FireWeaponProjectile()
 		{
-			weaponProjectile.FireProjectile(WeaponSO.Damage, DEFUALT_MAX_FIREABLE_WEAPON_RANGE);
+			weaponProjectile.StartFireProjectile(WeaponSO.Damage, DEFUALT_MAX_FIREABLE_WEAPON_RANGE);
 
-			UpdateAmmoDisplay();
+
 
 			if (weaponAudio != null)
 			{
-				weaponAudio.Fire();
+				weaponAudio.Fire(_firedShot);
 			}
 
 			print("BANG!");
 		}
 
-		protected override void ReloadKeyPressed()
-		{
-			if (_isReloading || _currentAmmoInWeapon >= WeaponSO.MagazineSize + 1) return;
 
-			if (weaponAudio != null)
-			{
-				weaponAudio.Reload();
-			}
-
-			StartCoroutine(ReloadOverTime());
-		}
-
-		protected virtual IEnumerator ReloadOverTime()
-		{
-			_isReloading = true;
-
-			UpdateAmmoDisplay();
-
-			yield return new WaitForSeconds(WeaponSO.ReloadSpeed);
-
-			if (_currentAmmoPool >= WeaponSO.MagazineSize)
-			{
-				// We add one because we can chamber a round. we dont want to lose extra ammo either, because this is not a realistic game.
-				int ammountToTake = (WeaponSO.MagazineSize + (_currentAmmoInWeapon > 0 ? 1 : 0)) - _currentAmmoInWeapon;
-
-				// if (_currentAmmoInWeapon > 0) ammountToTake++;
-
-				_currentAmmoInWeapon += ammountToTake;
-
-				_currentAmmoPool -= ammountToTake;
-			}
-			else
-			{
-				_currentAmmoInWeapon = _currentAmmoPool;
-				_currentAmmoPool = 0;
-			}
-
-			_isReloading = false;
-
-			UpdateAmmoDisplay();
-		}
 
 		protected override void SetUpWeapon()
 		{
-			_currentAmmoInWeapon = WeaponSO.MagazineSize;
+			if (WeaponSO == null)
+			{
+				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
+			}
 
-			_currentAmmoPool = WeaponSO.MaxAmmo;
+			currentFireMode = FireMode;
 
-			currentFireMode = WeaponSO.FireMode;
-
-			UpdateAmmoDisplay();
 
 
 			weaponAudio = GetComponent<IWeaponAudio>();
@@ -251,31 +262,15 @@ namespace Project.WeaponSystems
 			{
 				throw new NullReferenceException("Cannot use weapon with not projectile script! Please add one that has the " + nameof(IWeaponProjectile) + " interface attached.");
 			}
-		}
 
-		protected virtual void UpdateAmmoDisplay()
-		{
-			string convertFireModeIntoFunIcons = "";
+			weaponAmmo = GetComponent<IWeaponAmmo>();
 
-			if (currentFireMode == WeaponFireMode.Automatic)
+			if (weaponAmmo == null)
 			{
-				convertFireModeIntoFunIcons = "AUTO";
-			}
-			else if (currentFireMode == WeaponFireMode.SemiAutomatic)
-			{
-				convertFireModeIntoFunIcons = "SEMI";
-			}
-			else if (currentFireMode == WeaponFireMode.Burst)
-			{
-				convertFireModeIntoFunIcons = "BURST";
-			}
-			else if (currentFireMode == WeaponFireMode.BoltAction)
-			{
-				convertFireModeIntoFunIcons = "BOLT";
+				throw new NullReferenceException("Cannot use weapon with no " + nameof(IWeaponAmmo) + "! Do you want ammo? cos you need it.");
 			}
 
-			if (_isReloading) _ammoDisplayString = $"Ammo:\n[Reloading]\n[{convertFireModeIntoFunIcons}]";
-			else _ammoDisplayString = $"Ammo:\n{_currentAmmoInWeapon} / {_currentAmmoPool}\n[{convertFireModeIntoFunIcons}]";
+			weaponAmmo.ResetAllAmmo();
 		}
 
 		protected override void SpecialKeyPressed()
@@ -288,13 +283,14 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected virtual void ChangeWeaponFireMode()
+
+		private void ChangeWeaponFireMode()
 		{
-			if (WeaponSO.FireSelect == WeaponFireSelect.None)
+			if (FireSelect == WeaponFireSelect.None)
 			{
 				return;
 			}
-			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndAutomatic)
+			else if (FireSelect == WeaponFireSelect.SemiAndAutomatic)
 			{
 				if (currentFireMode == WeaponFireMode.Automatic)
 				{
@@ -305,7 +301,7 @@ namespace Project.WeaponSystems
 					currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
-			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndBurst)
+			else if (FireSelect == WeaponFireSelect.SemiAndBurst)
 			{
 				if (currentFireMode == WeaponFireMode.Burst)
 				{
@@ -316,7 +312,7 @@ namespace Project.WeaponSystems
 					currentFireMode = WeaponFireMode.Burst;
 				}
 			}
-			else if (WeaponSO.FireSelect == WeaponFireSelect.BurstAndAutomatic)
+			else if (FireSelect == WeaponFireSelect.BurstAndAutomatic)
 			{
 				if (currentFireMode == WeaponFireMode.Automatic)
 				{
@@ -327,7 +323,7 @@ namespace Project.WeaponSystems
 					currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
-			else if (WeaponSO.FireSelect == WeaponFireSelect.SemiAndBurstAndAutomatic)
+			else if (FireSelect == WeaponFireSelect.SemiAndBurstAndAutomatic)
 			{
 				if (currentFireMode == WeaponFireMode.Automatic)
 				{
@@ -342,13 +338,16 @@ namespace Project.WeaponSystems
 					currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
-
-			UpdateAmmoDisplay();
 		}
 
-		// protected override void FireKeyUpdate(bool state)
-		// {
-		// 	if (!state) _firedShot = false;
-		// }
+		protected override void ReloadKeyPressed()
+		{
+			weaponAmmo.Reload();
+
+			if (weaponAudio != null)
+			{
+				weaponAudio.Reload();
+			}
+		}
 	}
 }

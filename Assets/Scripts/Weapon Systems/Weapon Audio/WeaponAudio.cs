@@ -34,7 +34,7 @@ namespace Project.WeaponSystems
 		}
 
 
-		void IWeaponAudio.Fire()
+		void IWeaponAudio.Fire(bool state)
 		{
 			PlayFireAudio();
 		}

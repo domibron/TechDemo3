@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Project.HealthSystems;
@@ -7,10 +8,12 @@ namespace Project.WeaponSystems
 {
 	public class MeleeWeapon : BaseWeapon
 	{
-		public MeleeWeaponSO WeaponSO;
+		public WeaponSOBase WeaponSO;
 
 		// Privates
 		private IWeaponProjectile weaponProjectile;
+
+		private IWeaponAudio weaponAudio;
 
 		private float _timeUntilNextAttack = 0;
 
@@ -43,7 +46,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponProjectile.FireProjectile(WeaponSO.Damage, WeaponSO.Range);
+				weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
 			}
 		}
 
@@ -59,6 +62,11 @@ namespace Project.WeaponSystems
 
 		protected override void SetUpWeapon()
 		{
+			if (WeaponSO == null)
+			{
+				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
+			}
+
 			weaponProjectile = GetComponent<IWeaponProjectile>();
 		}
 

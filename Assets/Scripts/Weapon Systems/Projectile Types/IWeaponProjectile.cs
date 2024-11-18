@@ -10,6 +10,7 @@ namespace Project.WeaponSystems
 
 	public interface IWeaponProjectile
 	{
-		public void FireProjectile(float damage, float range);
+		public void StartFireProjectile(float damage, float range);
+		public void EndFireProjectile();
 	}
 }

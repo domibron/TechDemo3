@@ -21,7 +21,7 @@ namespace Project.WeaponSystems
 		/// </summary>
 		/// <param name="damage">Damager per line / pellet.</param>
 		/// <param name="range">The range of the raycast</param>
-		void IWeaponProjectile.FireProjectile(float damage, float range)
+		void IWeaponProjectile.StartFireProjectile(float damage, float range)
 		{
 
 			// centre Bullet
@@ -99,6 +99,11 @@ namespace Project.WeaponSystems
 
 			// thinking about the imprecision of computers and making them do precise calcuations with floats scare me
 			return new Vector3(Mathf.Cos(angleAsRad) * radius, Mathf.Sin(angleAsRad) * radius);
+		}
+
+		void IWeaponProjectile.EndFireProjectile()
+		{
+
 		}
 	}
 }

@@ -34,8 +34,11 @@ namespace Project.WeaponSystems
 
 			if (objectThatWasHit.GetComponent<IGibs>() != null) objectThatWasHit.GetComponent<IGibs>().GibsGoreType = WeaponGoreType;
 
+			print(objectThatWasHit.name);
+
 			if (objectThatWasHit.GetComponent<IFreezable>() != null)
 			{
+
 				IFreezable freezable = objectThatWasHit.GetComponent<IFreezable>();
 
 				float ammountToAdd = 0f;

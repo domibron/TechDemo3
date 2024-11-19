@@ -7,13 +7,14 @@ namespace Project.WeaponSystems
 {
 	public class SingleProjectile : WeaponProjectileBase
 	{
-		private ProjectileHitLogicBase hitLogic;
+		[SerializeField]
+		private ProjectileHitLogicBase _hitLogic;
 
 		void Start()
 		{
-			hitLogic = GetComponent<ProjectileHitLogicBase>();
+			_hitLogic = GetComponent<ProjectileHitLogicBase>();
 
-			if (hitLogic == null)
+			if (_hitLogic == null)
 			{
 				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
@@ -23,7 +24,7 @@ namespace Project.WeaponSystems
 		{
 			if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 			{
-				hitLogic.HitThisObject(hit.collider.gameObject, damage);
+				_hitLogic.HitThisObject(hit.collider.gameObject, damage);
 			}
 
 

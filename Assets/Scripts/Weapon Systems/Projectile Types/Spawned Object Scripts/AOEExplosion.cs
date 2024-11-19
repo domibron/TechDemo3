@@ -14,8 +14,8 @@ namespace Project.WeaponSystems
 
 		public float Delay = 1f;
 
-
-		private ProjectileHitLogicBase hitLogic;
+		[SerializeField]
+		private ProjectileHitLogicBase _hitLogic;
 
 
 		private float _damage;
@@ -26,9 +26,9 @@ namespace Project.WeaponSystems
 
 		void Start()
 		{
-			hitLogic = GetComponent<ProjectileHitLogicBase>();
+			_hitLogic = GetComponent<ProjectileHitLogicBase>();
 
-			if (hitLogic == null)
+			if (_hitLogic == null)
 			{
 				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
@@ -55,7 +55,7 @@ namespace Project.WeaponSystems
 
 		void OnTriggerEnter(Collider other)
 		{
-			hitLogic.HitThisObject(other.gameObject, _damage);
+			_hitLogic.HitThisObject(other.gameObject, _damage);
 		}
 
 		void IWeaponProjectileObject.SetUpPrefab(float damage, float range)

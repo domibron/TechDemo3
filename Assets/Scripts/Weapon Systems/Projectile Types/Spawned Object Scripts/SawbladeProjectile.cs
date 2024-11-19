@@ -14,6 +14,7 @@ namespace Project.WeaponSystems
 
 		public float Speed = 10f;
 
+		[SerializeField]
 		private ProjectileHitLogicBase hitLogic;
 
 		private Rigidbody _rigidbody;

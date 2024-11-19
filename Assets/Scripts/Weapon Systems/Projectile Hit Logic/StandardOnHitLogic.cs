@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Project.Gore;
 using Project.HealthSystems;
+using Project.StatusEffects;
 using UnityEngine;
 
 namespace Project.WeaponSystems
@@ -31,6 +32,8 @@ namespace Project.WeaponSystems
 			if (objectThatWasHit == null) return false;
 
 			if (objectThatWasHit.GetComponent<IGibs>() != null) objectThatWasHit.GetComponent<IGibs>().GibsGoreType = WeaponGoreType;
+
+			if (objectThatWasHit.GetComponent<IFreezable>() != null) objectThatWasHit.GetComponent<IFreezable>().UnFreeze();
 
 			objectThatWasHit.GetComponent<IHealth>()?.DamageHealth(damageToObject);
 

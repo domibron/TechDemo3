@@ -7,6 +7,7 @@ namespace Project.WeaponSystems
 {
 	public class ParticaleProjectileDamageCode : MonoBehaviour
 	{
+		[SerializeField]
 		private ProjectileHitLogicBase hitLogic;
 
 		private float _damage;

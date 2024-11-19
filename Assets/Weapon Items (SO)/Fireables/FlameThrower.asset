@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: FlameThrower
   m_EditorClassIdentifier: 
   WeaponName: Flame Thrower
-  Damage: 50
+  Damage: 4
   FireRate: 2
   Range: 20

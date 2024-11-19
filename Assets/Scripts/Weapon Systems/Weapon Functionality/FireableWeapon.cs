@@ -98,6 +98,7 @@ namespace Project.WeaponSystems
 		{
 			print("Disabled");
 			StopFiring();
+			StopAllCoroutines();
 		}
 
 		private void StopFiring()
@@ -224,7 +225,7 @@ namespace Project.WeaponSystems
 
 		private void FireWeaponProjectile()
 		{
-			weaponProjectile.StartFireProjectile(WeaponSO.Damage, DEFUALT_MAX_FIREABLE_WEAPON_RANGE);
+			weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
 
 
 

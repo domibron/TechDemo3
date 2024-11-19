@@ -61,6 +61,11 @@ namespace Project.HealthSystems
 			if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
 
 
+			CheckIfDead();
+		}
+
+		private void CheckIfDead()
+		{
 			if (CurrentHealth <= 0)
 			{
 				OnDeath.Invoke();
@@ -88,6 +93,8 @@ namespace Project.HealthSystems
 			CurrentHealth -= reductionAmmount;
 
 			if (HasImmortalFrames) _immortalFrameCounter = HowLongImmortalFramesLast;
+
+			// CheckIfDead();
 		}
 
 		void IHealth.ResetHealth()

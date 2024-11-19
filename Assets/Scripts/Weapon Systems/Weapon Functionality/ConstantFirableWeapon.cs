@@ -137,6 +137,7 @@ namespace Project.WeaponSystems
 		{
 			print("Disabled");
 			StopFiring();
+			StopAllCoroutines();
 			_spoolTime = 0f;
 			_timeAtDisable = Time.time;
 		}

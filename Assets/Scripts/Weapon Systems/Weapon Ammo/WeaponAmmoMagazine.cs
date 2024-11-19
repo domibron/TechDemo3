@@ -15,6 +15,8 @@ namespace Project.WeaponSystems
 
 		public float AmmoReductionWhenFired = 1;
 
+		public bool AllowExtraRoundInChamber = true;
+
 		public float ReloadSpeed = 1f;
 
 		protected bool _isReloading = false;
@@ -71,7 +73,7 @@ namespace Project.WeaponSystems
 
 		protected virtual void ReloadWeapon()
 		{
-			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + 1) return;
+			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + (AllowExtraRoundInChamber ? 1 : 0)) return;
 
 			StartCoroutine(ReloadOverTime());
 		}
@@ -85,7 +87,7 @@ namespace Project.WeaponSystems
 			if (_currentAmmoPool >= MagazineSize)
 			{
 				// We add one because we can chamber a round. we dont want to lose extra ammo either, because this is not a realistic game.
-				float ammountToTake = (MagazineSize + (_currentAmmoInWeapon > 0 ? 1 : 0)) - _currentAmmoInWeapon;
+				float ammountToTake = (MagazineSize + (_currentAmmoInWeapon > 0 ? (AllowExtraRoundInChamber ? 1 : 0) : 0)) - _currentAmmoInWeapon;
 
 				// if (_currentAmmoInWeapon > 0) ammountToTake++;
 
@@ -105,7 +107,7 @@ namespace Project.WeaponSystems
 		protected virtual string GetAmmoAsString()
 		{
 			if (_isReloading) return $"Ammo:\n[Reloading]";
-			else return $"Ammo:\n{_currentAmmoInWeapon:F0} / {_currentAmmoPool:F0}]";
+			else return $"Ammo:\n{_currentAmmoInWeapon:F0} / {_currentAmmoPool:F0}";
 		}
 
 

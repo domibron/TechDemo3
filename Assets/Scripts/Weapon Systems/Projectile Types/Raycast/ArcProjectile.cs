@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Project.HealthSystems;
 using UnityEngine;
 
 namespace Project.WeaponSystems
@@ -24,20 +24,32 @@ namespace Project.WeaponSystems
 		[Tooltip("This will make bullet ammount odd and greater than 2!")]
 		public bool CentreBullet = true;
 
+		private IProjectileHitLogic hitLogic;
 
+		void Start()
+		{
+			hitLogic = GetComponent<IProjectileHitLogic>();
+
+			if (hitLogic == null)
+			{
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+			}
+		}
 
 		void IWeaponProjectile.StartFireProjectile(float damage, float range)
 		{
 			int bulletTotal = BulletAmmount;
+
+			RaycastHit hit;
 
 			if (CentreBullet)
 			{
 				if (bulletTotal < 3) bulletTotal = 3;
 				else if (bulletTotal % 2 == 0) bulletTotal++;
 
-				if (Physics.Raycast(transform.position, transform.forward, out RaycastHit centreHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
+				if (Physics.Raycast(transform.position, transform.forward, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
-					centreHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+					hitLogic.HitThisObject(hit.collider.gameObject, damage);
 				}
 
 				Debug.DrawRay(transform.position, transform.forward * range, Color.red, 10);
@@ -48,7 +60,7 @@ namespace Project.WeaponSystems
 			float randomPoint;
 			Vector3 rayDirection;
 
-			RaycastHit endHit;
+
 
 			// We get the end of the arc raycasts.
 
@@ -60,9 +72,11 @@ namespace Project.WeaponSystems
 			// rayDirection = transform.forward;
 			// rayDirection += randomPoint;
 
-			if (Physics.Raycast(transform.position, rayDirection, out endHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
+			if (Physics.Raycast(transform.position, rayDirection, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 			{
-				endHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+				hitLogic.HitThisObject(hit.collider.gameObject, damage);
+
+
 			}
 
 			Debug.DrawRay(transform.position, rayDirection * range, Color.blue, 10);
@@ -75,9 +89,11 @@ namespace Project.WeaponSystems
 			// rayDirection = transform.forward;
 			// rayDirection += randomPoint;
 
-			if (Physics.Raycast(transform.position, rayDirection, out endHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
+			if (Physics.Raycast(transform.position, rayDirection, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 			{
-				endHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+				hitLogic.HitThisObject(hit.collider.gameObject, damage);
+
+
 			}
 
 
@@ -106,9 +122,11 @@ namespace Project.WeaponSystems
 				//print($"{randomPoint} | {transform.forward} = {rayDirection}");
 
 				//raycast
-				if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
+				if (Physics.Raycast(transform.position, rayDirection, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
-					hit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+					hitLogic.HitThisObject(hit.collider.gameObject, damage);
+
+
 				}
 
 

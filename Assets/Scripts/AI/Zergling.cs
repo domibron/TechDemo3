@@ -1,28 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using Project.Gore;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Project.AI
 {
-	[RequireComponent(typeof(NavMeshAgent), typeof(CharacterController))]
+	public enum OffMeshLinkMoveMethod
+	{
+		Teleport,
+		NormalSpeed,
+		Parabola
+	}
+
+	[RequireComponent(typeof(NavMeshAgent))]
 	public class Zergling : MonoBehaviour
 	{
 
-		private NavMeshAgent AIAgent;
+		private IGibs _gibs;
 
-		private float health = 100f;
+		private NavMeshAgent _aIAgent;
 
-		private Transform PlayerTarget;
+		private Transform _playerTarget;
 
-		private NavMeshPath path;
+		private NavMeshPath _path;
+
 
 		void Start()
 		{
 			SetUpZergling();
-
-
 		}
+
+
+
 
 		void Update()
 		{
@@ -32,26 +42,27 @@ namespace Project.AI
 
 		public void KillZergling()
 		{
+			_gibs.BeginGibs(transform.position);
+
 			Destroy(this.gameObject);
 		}
 
 		private void CalculateAIThinking()
 		{
-			path = new NavMeshPath();
 
-			NavMesh.CalculatePath(transform.position, PlayerTarget.position, 1 << 32, path);
-
-			AIAgent.path = path;
+			_aIAgent.destination = _playerTarget.position;
 		}
 
 
 		private void SetUpZergling()
 		{
-			AIAgent = GetComponent<NavMeshAgent>();
+			_aIAgent = GetComponent<NavMeshAgent>();
 
-			PlayerTarget = GameObject.FindWithTag("Player").transform;
+			_playerTarget = GameObject.FindWithTag("Player").transform;
 
-			InvokeRepeating(nameof(CalculateAIThinking), 0, 1);
+			_gibs = GetComponent<IGibs>();
+
+			InvokeRepeating(nameof(CalculateAIThinking), 0, 0.1f);
 		}
 	}
 }

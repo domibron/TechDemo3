@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Project.HealthSystems;
 using UnityEngine;
 
 namespace Project.WeaponSystems
@@ -15,6 +15,19 @@ namespace Project.WeaponSystems
 		public float ProjectileSpread = 0.1f;
 
 		public bool CentreProjectile = true;
+
+
+		private IProjectileHitLogic hitLogic;
+
+		void Start()
+		{
+			hitLogic = GetComponent<IProjectileHitLogic>();
+
+			if (hitLogic == null)
+			{
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+			}
+		}
 
 		/// <summary>
 		/// Generates the rays to hit entities.
@@ -31,7 +44,7 @@ namespace Project.WeaponSystems
 			{
 				if (Physics.Raycast(transform.position, transform.forward, out RaycastHit centreHit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
-					centreHit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+					hitLogic.HitThisObject(centreHit.collider.gameObject, damage);
 				}
 
 				Debug.DrawRay(transform.position, transform.forward * range, Color.red, 10);
@@ -82,7 +95,8 @@ namespace Project.WeaponSystems
 				//raycast
 				if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
-					hit.collider.gameObject.GetComponent<IHealth>()?.DamageHealth(damage);
+					hitLogic.HitThisObject(hit.collider.gameObject, damage);
+
 				}
 
 

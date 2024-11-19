@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class ParticleProjectile : MonoBehaviour, IWeaponProjectile
+	public class ParticleProjectile : WeaponProjectileBase
 	{
 		public ParticleSystem WeaponParticleSystem;
 
@@ -15,13 +15,13 @@ namespace Project.WeaponSystems
 			WeaponParticleSystem.Stop();
 		}
 
-		void IWeaponProjectile.EndFireProjectile()
+		public override void EndFireProjectile()
 		{
 			WeaponParticleSystem.Stop();
 
 		}
 
-		void IWeaponProjectile.StartFireProjectile(float damage, float range)
+		public override void StartFireProjectile(float damage, float range)
 		{
 			ProjectileDamager.SetVariables(damage);
 

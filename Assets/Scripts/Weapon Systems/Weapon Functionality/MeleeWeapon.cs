@@ -11,9 +11,10 @@ namespace Project.WeaponSystems
 		public WeaponSOBase WeaponSO;
 
 		// Privates
-		private IWeaponProjectile weaponProjectile;
+		private WeaponProjectileBase weaponProjectile;
 
-		private IWeaponAudio weaponAudio;
+		[SerializeField]
+		private WeaponAudioBase weaponAudio;
 
 		private float _timeUntilNextAttack = 0;
 
@@ -33,12 +34,12 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void AimWeapon(bool state)
+		public override void AimKeyHeld(bool state)
 		{
 			// Should Do with animations.
 		}
 
-		protected override void FireWeapon(bool state)
+		public override void FireKeyHeld(bool state)
 		{
 			if (!state) return;
 
@@ -50,12 +51,12 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void ReloadKeyPressed()
+		public override void ReloadKeyPressed()
 		{
 			// inspect. or dont.
 		}
 
-		protected override void SpecialKeyPressed()
+		public override void SpecialKeyPressed()
 		{
 			// Other special animtion.
 		}
@@ -67,7 +68,7 @@ namespace Project.WeaponSystems
 				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
 			}
 
-			weaponProjectile = GetComponent<IWeaponProjectile>();
+			weaponProjectile = GetComponent<WeaponProjectileBase>();
 		}
 
 		// protected override void FireKeyUpdate(bool state)

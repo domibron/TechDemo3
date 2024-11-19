@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class MultiProjectile : MonoBehaviour, IWeaponProjectile
+	public class MultiProjectile : WeaponProjectileBase
 	{
 		public static float DOUBLE_OF_PI = 6.28318530718f;
 
@@ -17,15 +17,15 @@ namespace Project.WeaponSystems
 		public bool CentreProjectile = true;
 
 
-		private IProjectileHitLogic hitLogic;
+		private ProjectileHitLogicBase hitLogic;
 
 		void Start()
 		{
-			hitLogic = GetComponent<IProjectileHitLogic>();
+			hitLogic = GetComponent<ProjectileHitLogicBase>();
 
 			if (hitLogic == null)
 			{
-				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
 		}
 
@@ -34,7 +34,7 @@ namespace Project.WeaponSystems
 		/// </summary>
 		/// <param name="damage">Damager per line / pellet.</param>
 		/// <param name="range">The range of the raycast</param>
-		void IWeaponProjectile.StartFireProjectile(float damage, float range)
+		public override void StartFireProjectile(float damage, float range)
 		{
 
 			// centre Bullet
@@ -92,6 +92,8 @@ namespace Project.WeaponSystems
 				rayDirection = transform.forward + transform.right * randomPoint.x + transform.up * randomPoint.y;
 				// rayDirection += randomPoint;
 
+
+
 				//raycast
 				if (Physics.Raycast(transform.position, rayDirection, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
@@ -115,7 +117,7 @@ namespace Project.WeaponSystems
 			return new Vector3(Mathf.Cos(angleAsRad) * radius, Mathf.Sin(angleAsRad) * radius);
 		}
 
-		void IWeaponProjectile.EndFireProjectile()
+		public override void EndFireProjectile()
 		{
 
 		}

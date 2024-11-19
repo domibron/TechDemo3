@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class WeaponAmmoMagazine : MonoBehaviour, IWeaponAmmo
+	public class WeaponAmmoMagazine : WeaponAmmoBase
 	{
 
-		string IWeaponAmmo.AmmoString => GetAmmoAsString();
+		public override string AmmoString => GetAmmoAsString();
 
 		public float MaxAmmoPool = 220;
 
@@ -27,55 +27,34 @@ namespace Project.WeaponSystems
 		private float _currentAmmoPool;
 
 
-		bool IWeaponAmmo.HasAmmo()
-		{
-			return GetIfWeaponHasAmmo();
-		}
-
-
-		void IWeaponAmmo.StartReducingAmmo()
-		{
-			ReduceAmmoInMagazine();
-		}
-
-		void IWeaponAmmo.StopReducingAmmo()
-		{
-
-		}
-
-		void IWeaponAmmo.Reload()
-		{
-			ReloadWeapon();
-		}
-
-		void IWeaponAmmo.ResetAllAmmo()
-		{
-			ResetWeaponAmmo();
-		}
-
-		private bool GetIfWeaponHasAmmo()
+		public override bool HasAmmo()
 		{
 			return _currentAmmoInWeapon > 0;
 		}
 
-		protected virtual void ResetWeaponAmmo()
+		public override void Reload()
+		{
+			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + (AllowExtraRoundInChamber ? 1 : 0)) return;
+
+			StartCoroutine(ReloadOverTime());
+		}
+
+		public override void ResetAllAmmo()
 		{
 			_currentAmmoInWeapon = MagazineSize;
 
 			_currentAmmoPool = MaxAmmoPool;
 		}
 
-		private void ReduceAmmoInMagazine()
+		public override void StartReducingAmmo()
 		{
-			if (GetIfWeaponHasAmmo())
+			if (HasAmmo())
 				_currentAmmoInWeapon -= AmmoReductionWhenFired;
 		}
 
-		protected virtual void ReloadWeapon()
+		public override void StopReducingAmmo()
 		{
-			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + (AllowExtraRoundInChamber ? 1 : 0)) return;
 
-			StartCoroutine(ReloadOverTime());
 		}
 
 		protected virtual IEnumerator ReloadOverTime()

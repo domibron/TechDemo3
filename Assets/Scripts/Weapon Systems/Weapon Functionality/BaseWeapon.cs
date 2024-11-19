@@ -5,51 +5,22 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public abstract class BaseWeapon : MonoBehaviour, IWeapon
+	public abstract class BaseWeapon : MonoBehaviour
 	{
 		public abstract string DisplayName { get; }
 		public abstract string AmmoDisplay { get; }
 
-		void IWeapon.AimKeyHeld(bool state)
-		{
-			AimWeapon(state);
-		}
+		public abstract void AimKeyHeld(bool state);
 
-		void IWeapon.FireKeyHeld(bool state)
-		{
-			FireWeapon(state);
-		}
+		public abstract void FireKeyHeld(bool state);
 
-		void IWeapon.ReloadKeyPressed()
-		{
-			ReloadKeyPressed();
-		}
+		public abstract void ReloadKeyPressed();
 
-		void IWeapon.SpecialKeyPressed()
-		{
-			SpecialKeyPressed();
-		}
-
-		// void IWeapon.FireKeyUpdate(bool state)
-		// {
-		// 	FireKeyUpdate(state);
-		// }
-
-
+		public abstract void SpecialKeyPressed();
 
 		protected abstract void SetUpWeapon();
 
 
-
-		protected abstract void AimWeapon(bool state);
-
-		protected abstract void FireWeapon(bool state);
-
-		protected abstract void ReloadKeyPressed();
-
-		protected abstract void SpecialKeyPressed();
-
-		// protected abstract void FireKeyUpdate(bool state);
 
 
 	}

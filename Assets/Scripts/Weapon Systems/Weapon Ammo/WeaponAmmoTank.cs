@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class WeaponAmmoTank : MonoBehaviour, IWeaponAmmo
+	public class WeaponAmmoTank : WeaponAmmoBase
 	{
-		string IWeaponAmmo.AmmoString => $"Ammo:\n{((_currentAmmo / MaxAmmo) * 100f):F0}%";
+		public override string AmmoString => $"Ammo:\n{((_currentAmmo / MaxAmmo) * 100f):F0}%";
 
 		public float MaxAmmo = 100f;
 
@@ -16,27 +16,27 @@ namespace Project.WeaponSystems
 
 		private bool _reduceAmmo = false;
 
-		bool IWeaponAmmo.HasAmmo()
+		public override bool HasAmmo()
 		{
 			return _currentAmmo > 0;
 		}
 
-		void IWeaponAmmo.Reload()
+		public override void Reload()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		void IWeaponAmmo.ResetAllAmmo()
+		public override void ResetAllAmmo()
 		{
 			_currentAmmo = MaxAmmo;
 		}
 
-		void IWeaponAmmo.StartReducingAmmo()
+		public override void StartReducingAmmo()
 		{
 			_reduceAmmo = true;
 		}
 
-		void IWeaponAmmo.StopReducingAmmo()
+		public override void StopReducingAmmo()
 		{
 			_reduceAmmo = false;
 		}

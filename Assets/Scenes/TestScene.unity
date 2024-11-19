@@ -911,6 +911,7 @@ MonoBehaviour:
   FireSelect: 0
   FireMode: 0
   BurstAmmount: 3
+  weaponAudio: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -5008,9 +5009,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1433846192}
   - component: {fileID: 1433846195}
-  - component: {fileID: 1433846196}
   - component: {fileID: 1433846197}
   - component: {fileID: 1433846198}
+  - component: {fileID: 1433846199}
   m_Layer: 6
   m_Name: Test Gun
   m_TagString: Untagged
@@ -5054,18 +5055,6 @@ MonoBehaviour:
   SpoolUpBeforeFiring: 1
   SpoolUpTime: 2
   SpoolDownTime: 4
---- !u!114 &1433846196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1433846191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84479282350b2ab4ca5f502e88b25401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1433846197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5093,6 +5082,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponGoreType: 2
+--- !u!114 &1433846199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433846191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3a6bc9925995c4889875afa41b69b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileArcDirection: 0
+  ArcMaxSpread: 0.1
+  BulletAmmount: 5
+  CentreBullet: 1
 --- !u!1 &1436151733
 GameObject:
   m_ObjectHideFlags: 0
@@ -10581,6 +10586,7 @@ MonoBehaviour:
   FireSelect: 0
   FireMode: 1
   BurstAmmount: 3
+  weaponAudio: {fileID: 0}
 --- !u!114 &1552775469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10980,6 +10986,7 @@ MonoBehaviour:
   FireSelect: 0
   FireMode: 1
   BurstAmmount: 3
+  weaponAudio: {fileID: 0}
 --- !u!114 &1678408933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11700,6 +11707,7 @@ MonoBehaviour:
   FireSelect: 0
   FireMode: 0
   BurstAmmount: 3
+  weaponAudio: {fileID: 0}
 --- !u!114 &1990254037
 MonoBehaviour:
   m_ObjectHideFlags: 0

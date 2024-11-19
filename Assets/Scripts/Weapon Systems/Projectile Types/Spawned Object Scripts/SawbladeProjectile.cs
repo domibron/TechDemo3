@@ -14,7 +14,7 @@ namespace Project.WeaponSystems
 
 		public float Speed = 10f;
 
-		private IProjectileHitLogic hitLogic;
+		private ProjectileHitLogicBase hitLogic;
 
 		private Rigidbody _rigidbody;
 
@@ -29,11 +29,11 @@ namespace Project.WeaponSystems
 
 			_direction = transform.forward;
 
-			hitLogic = GetComponent<IProjectileHitLogic>();
+			hitLogic = GetComponent<ProjectileHitLogicBase>();
 
 			if (hitLogic == null)
 			{
-				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
 		}
 

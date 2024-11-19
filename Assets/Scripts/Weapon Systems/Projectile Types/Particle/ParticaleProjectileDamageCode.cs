@@ -7,18 +7,18 @@ namespace Project.WeaponSystems
 {
 	public class ParticaleProjectileDamageCode : MonoBehaviour
 	{
-		private IProjectileHitLogic hitLogic;
+		private ProjectileHitLogicBase hitLogic;
 
 		private float _damage;
 
 
 		void Start()
 		{
-			hitLogic = GetComponent<IProjectileHitLogic>();
+			hitLogic = GetComponent<ProjectileHitLogicBase>();
 
 			if (hitLogic == null)
 			{
-				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
 		}
 

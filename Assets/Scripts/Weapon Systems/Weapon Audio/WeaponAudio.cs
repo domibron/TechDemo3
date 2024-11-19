@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Project.WeaponSystems
 {
 	[RequireComponent(typeof(AudioSource))]
-	public class WeaponAudio : MonoBehaviour, IWeaponAudio
+	public class WeaponAudio : WeaponAudioBase
 	{
 		public AudioClip SFX_WeaponFire;
 		public AudioClip SFX_WeaponAim;
@@ -23,28 +23,28 @@ namespace Project.WeaponSystems
 		}
 
 
-		void IWeaponAudio.Aim()
+		public override void Aim()
 		{
 			PlayAimAudio();
 		}
 
-		void IWeaponAudio.UnAim()
+		public override void UnAim()
 		{
 			PlayUnAimAudio();
 		}
 
 
-		void IWeaponAudio.Fire(bool state)
+		public override void Fire(bool state)
 		{
 			PlayFireAudio();
 		}
 
-		void IWeaponAudio.Reload()
+		public override void Reload()
 		{
 			PlayReloadAim();
 		}
 
-		void IWeaponAudio.SpecialAction()
+		public override void SpecialAction()
 		{
 			PlaySpecialActionAudio();
 		}

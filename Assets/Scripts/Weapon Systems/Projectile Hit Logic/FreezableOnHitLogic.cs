@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class FreezableOnHitLogic : MonoBehaviour, IProjectileHitLogic
+	public class FreezableOnHitLogic : ProjectileHitLogicBase
 	{
 		public GoreType WeaponGoreType = GoreType.Nothing;
 
@@ -28,7 +28,7 @@ namespace Project.WeaponSystems
 
 		}
 
-		bool IProjectileHitLogic.HitThisObject(GameObject objectThatWasHit, float damageToObject)
+		public override bool HitThisObject(GameObject objectThatWasHit, float damageToObject)
 		{
 			if (objectThatWasHit == null) return false;
 

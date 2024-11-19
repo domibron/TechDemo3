@@ -10,7 +10,7 @@ namespace Project.WeaponSystems
 	{
 
 		//Publics
-		public IWeapon CurrentSelectedWeapon;
+		public BaseWeapon CurrentSelectedWeapon;
 
 		public List<GameObject> WeaponsInInventory = new List<GameObject>();
 
@@ -184,9 +184,9 @@ namespace Project.WeaponSystems
 
 		}
 
-		private IWeapon GetWeaponComponent(int slot)
+		private BaseWeapon GetWeaponComponent(int slot)
 		{
-			return WeaponsInInventory[slot].GetComponent<IWeapon>();
+			return WeaponsInInventory[slot].GetComponent<BaseWeapon>();
 		}
 	}
 }

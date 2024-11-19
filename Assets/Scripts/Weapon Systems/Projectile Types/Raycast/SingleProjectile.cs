@@ -5,21 +5,21 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class SingleProjectile : MonoBehaviour, IWeaponProjectile
+	public class SingleProjectile : WeaponProjectileBase
 	{
-		private IProjectileHitLogic hitLogic;
+		private ProjectileHitLogicBase hitLogic;
 
 		void Start()
 		{
-			hitLogic = GetComponent<IProjectileHitLogic>();
+			hitLogic = GetComponent<ProjectileHitLogicBase>();
 
 			if (hitLogic == null)
 			{
-				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
 		}
 
-		void IWeaponProjectile.StartFireProjectile(float damage, float range)
+		public override void StartFireProjectile(float damage, float range)
 		{
 			if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 			{
@@ -30,7 +30,7 @@ namespace Project.WeaponSystems
 			Debug.DrawRay(transform.position, transform.forward * range, Color.red, 10);
 		}
 
-		void IWeaponProjectile.EndFireProjectile()
+		public override void EndFireProjectile()
 		{
 
 		}

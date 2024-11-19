@@ -54,12 +54,14 @@ namespace Project.WeaponSystems
 		public int BurstAmmount = 3;
 
 		// Privates
-		private IWeaponProjectile weaponProjectile;
+		[SerializeField]
+		private WeaponProjectileBase weaponProjectile;
 
+		[SerializeField]
+		private WeaponAudioBase weaponAudio;
 
-		private IWeaponAudio weaponAudio;
-
-		private IWeaponAmmo weaponAmmo;
+		[SerializeField]
+		private WeaponAmmoBase weaponAmmo;
 
 
 
@@ -108,7 +110,7 @@ namespace Project.WeaponSystems
 			if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
 		}
 
-		protected override void AimWeapon(bool state)
+		public override void AimKeyHeld(bool state)
 		{
 			if (_isAiming != state)
 			{
@@ -123,7 +125,7 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void FireWeapon(bool state)
+		public override void FireKeyHeld(bool state)
 		{
 			if (!state)
 			{
@@ -250,31 +252,31 @@ namespace Project.WeaponSystems
 
 
 
-			weaponAudio = GetComponent<IWeaponAudio>();
+			weaponAudio = GetComponent<WeaponAudio>();
 
 			if (weaponAudio == null)
 			{
-				Debug.Log("You can add any scripts that inherit " + nameof(IWeaponAudio) + " to this to play sounds!");
+				Debug.Log("You can add any scripts that inherit " + nameof(WeaponAudioBase) + " to this to play sounds!");
 			}
 
-			weaponProjectile = GetComponent<IWeaponProjectile>();
+			weaponProjectile = GetComponent<WeaponProjectileBase>();
 
 			if (weaponProjectile == null)
 			{
-				throw new NullReferenceException("Cannot use weapon with not projectile script! Please add one that has the " + nameof(IWeaponProjectile) + " interface attached.");
+				throw new NullReferenceException("Cannot use weapon with not projectile script! Please add one that has the " + nameof(WeaponProjectileBase) + " interface attached.");
 			}
 
-			weaponAmmo = GetComponent<IWeaponAmmo>();
+			weaponAmmo = GetComponent<WeaponAmmoBase>();
 
 			if (weaponAmmo == null)
 			{
-				throw new NullReferenceException("Cannot use weapon with no " + nameof(IWeaponAmmo) + "! Do you want ammo? cos you need it.");
+				throw new NullReferenceException("Cannot use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you need it.");
 			}
 
 			weaponAmmo.ResetAllAmmo();
 		}
 
-		protected override void SpecialKeyPressed()
+		public override void SpecialKeyPressed()
 		{
 			ChangeWeaponFireMode();
 
@@ -341,7 +343,7 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		protected override void ReloadKeyPressed()
+		public override void ReloadKeyPressed()
 		{
 			weaponAmmo.Reload();
 

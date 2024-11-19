@@ -8,9 +8,9 @@ namespace Project.WeaponSystems
 	Yes, I will call raycasts projectiles. I feel like that.
 	*/
 
-	public interface IWeaponProjectile
+	public abstract class WeaponProjectileBase : MonoBehaviour
 	{
-		public void StartFireProjectile(float damage, float range);
-		public void EndFireProjectile();
+		public abstract void StartFireProjectile(float damage, float range);
+		public abstract void EndFireProjectile();
 	}
 }

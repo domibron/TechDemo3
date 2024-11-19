@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	public class SpawnWeaponProjectile : MonoBehaviour, IWeaponProjectile
+	public class SpawnWeaponProjectile : WeaponProjectileBase
 	{
 		[Header("Rigidbody Projectile (MUST HAVE A RB)")]
 		public GameObject ProjectileToSpawn;
@@ -22,12 +22,12 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		void IWeaponProjectile.EndFireProjectile()
+		public override void EndFireProjectile()
 		{
 
 		}
 
-		void IWeaponProjectile.StartFireProjectile(float damage, float range)
+		public override void StartFireProjectile(float damage, float range)
 		{
 			GameObject projectile = Instantiate(ProjectileToSpawn, TargetPositionToSpawn.position, Quaternion.LookRotation(transform.forward));
 

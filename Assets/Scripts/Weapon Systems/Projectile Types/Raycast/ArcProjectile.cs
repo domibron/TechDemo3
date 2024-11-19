@@ -11,7 +11,7 @@ namespace Project.WeaponSystems
 		Vertical,
 	}
 
-	public class ArcProjectile : MonoBehaviour, IWeaponProjectile
+	public class ArcProjectile : WeaponProjectileBase
 	{
 		public static float HALF_OF_PI = 1.57079632679f;
 
@@ -24,19 +24,19 @@ namespace Project.WeaponSystems
 		[Tooltip("This will make bullet ammount odd and greater than 2!")]
 		public bool CentreBullet = true;
 
-		private IProjectileHitLogic hitLogic;
+		private ProjectileHitLogicBase hitLogic;
 
 		void Start()
 		{
-			hitLogic = GetComponent<IProjectileHitLogic>();
+			hitLogic = GetComponent<ProjectileHitLogicBase>();
 
 			if (hitLogic == null)
 			{
-				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(IProjectileHitLogic) + " to this object!");
+				throw new NullReferenceException("Cannot work with no logic, please add something with " + nameof(ProjectileHitLogicBase) + " to this object!");
 			}
 		}
 
-		void IWeaponProjectile.StartFireProjectile(float damage, float range)
+		public override void StartFireProjectile(float damage, float range)
 		{
 			int bulletTotal = BulletAmmount;
 
@@ -101,7 +101,11 @@ namespace Project.WeaponSystems
 
 			bulletTotal -= 2;
 
+			Vector3 vec = Quaternion.AngleAxis(5f, transform.up) * transform.forward;
+			Vector3 vec2 = Quaternion.AngleAxis(-5f, transform.up) * transform.forward;
 
+			Debug.DrawRay(transform.position, vec, Color.yellow, 20f);
+			Debug.DrawRay(transform.position, vec2, Color.yellow, 20f);
 
 			if (bulletTotal <= 0) return;
 
@@ -153,7 +157,7 @@ namespace Project.WeaponSystems
 		I hate math :c i hate 3d space and directions and rotations, this is immence suffering.
 		*/
 
-		void IWeaponProjectile.EndFireProjectile()
+		public override void EndFireProjectile()
 		{
 
 		}

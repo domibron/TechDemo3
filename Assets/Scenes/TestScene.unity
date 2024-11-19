@@ -1763,7 +1763,7 @@ GameObject:
   - component: {fileID: 475367826}
   - component: {fileID: 475367825}
   - component: {fileID: 475367824}
-  - component: {fileID: 475367823}
+  - component: {fileID: 475367827}
   m_Layer: 6
   m_Name: Frost Gun
   m_TagString: Untagged
@@ -1787,19 +1787,6 @@ Transform:
   - {fileID: 1377490761}
   m_Father: {fileID: 1325062517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &475367823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475367821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18aa51b7f75725a4f8982aac4e6765be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WeaponGoreType: 2
 --- !u!114 &475367824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,11 +1827,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponSO: {fileID: 11400000, guid: ff67f6da07a444b4c9042d444c66cf25, type: 2}
   Overheat: 1
-  OverheatTime: 2
-  CoolDownTime: 2
+  OverheatTime: 5
+  OverheatCoolDownTime: 6
+  CoolDownTime: 4
   SpoolUpBeforeFiring: 1
-  SpoolUpTime: 2
-  SpoolDownTime: 4
+  SpoolUpTime: 0.2
+  SpoolDownTime: 0.1
+--- !u!114 &475367827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475367821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e47ba8a138c40d4e98bd3b5d2a08e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponGoreType: 2
+  MaxFrozenPercentage: 50
+  FreezeIncreaseAmmount: 10
 --- !u!1 &517781743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,6 +1932,7 @@ MonoBehaviour:
   WeaponSO: {fileID: 11400000, guid: 85808d4cdbd975a468370444b5fd2cd9, type: 2}
   Overheat: 0
   OverheatTime: 2
+  OverheatCoolDownTime: 2
   CoolDownTime: 2
   SpoolUpBeforeFiring: 1
   SpoolUpTime: 0.2
@@ -2272,6 +2276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ff0bdf86205d646aa337d38a52677a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NormalUnFreezTime: 1
+  FullFrozenUnFreezTime: 3
 --- !u!114 &653715183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3103,6 +3109,7 @@ MonoBehaviour:
   WeaponSO: {fileID: 11400000, guid: 6e255eff2490d3f48ac461d960d604bd, type: 2}
   Overheat: 1
   OverheatTime: 3
+  OverheatCoolDownTime: 12
   CoolDownTime: 6
   SpoolUpBeforeFiring: 1
   SpoolUpTime: 2
@@ -5042,6 +5049,7 @@ MonoBehaviour:
   WeaponSO: {fileID: 11400000, guid: ff67f6da07a444b4c9042d444c66cf25, type: 2}
   Overheat: 1
   OverheatTime: 2
+  OverheatCoolDownTime: 2
   CoolDownTime: 2
   SpoolUpBeforeFiring: 1
   SpoolUpTime: 2

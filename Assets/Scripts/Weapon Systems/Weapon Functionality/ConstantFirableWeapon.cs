@@ -18,8 +18,13 @@ namespace Project.WeaponSystems
 
 		public bool Overheat = false;
 
+		[Tooltip("How fast the overheat bar goes up.")]
 		public float OverheatTime = 2f;
 
+		[Tooltip("Time before weapin is usable again after overheat.")]
+		public float OverheatCoolDownTime = 2f;
+
+		[Tooltip("How fast the overheat bar goes down.")]
 		public float CoolDownTime = 2f;
 
 
@@ -88,7 +93,8 @@ namespace Project.WeaponSystems
 				_fireTime = 0;
 				// _ammoUsageTime = 1;
 
-				if (_overheatTime >= 0) _overheatTime -= Time.deltaTime * (1f / CoolDownTime);
+				if (_overheatTime >= 0 && !_overheated) _overheatTime -= Time.deltaTime * (1f / CoolDownTime);
+				else if (_overheatTime >= 0 && _overheated) _overheatTime -= Time.deltaTime * (1f / OverheatCoolDownTime);
 			}
 
 			// _ammoUsageRate = Mathf.Lerp(WeaponSO.AmmoUsageRate, WeaponSO.MaxAmmoUsageRate, _ammoUsageTime);

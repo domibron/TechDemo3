@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.UI.WeaponStats;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Project.WeaponSystems
 {
@@ -12,7 +14,7 @@ namespace Project.WeaponSystems
 
 		public override string DisplayName => WeaponSO.name;
 
-		public override string AmmoDisplay => weaponAmmo.AmmoString;
+		public override string AmmoDisplay => weaponAmmo != null ? weaponAmmo.AmmoString : "";
 
 
 
@@ -34,6 +36,8 @@ namespace Project.WeaponSystems
 
 		public float SpoolDownTime = 4f;
 
+
+		public bool SingleFire = false;
 
 
 		private WeaponProjectileBase weaponProjectile;
@@ -73,6 +77,8 @@ namespace Project.WeaponSystems
 			SetUpWeapon();
 		}
 
+
+
 		void Update()
 		{
 			if (_timeUntilNextAttack >= 0)
@@ -95,7 +101,10 @@ namespace Project.WeaponSystems
 				// _ammoUsageTime = 1;
 
 				if (_overheatTime >= 0 && !_overheated) _overheatTime -= Time.deltaTime * (1f / CoolDownTime);
-				else if (_overheatTime >= 0 && _overheated) _overheatTime -= Time.deltaTime * (1f / OverheatCoolDownTime);
+				else if (_overheatTime >= 0 && _overheated)
+				{
+					_overheatTime -= Time.deltaTime * (1f / OverheatCoolDownTime);
+				}
 			}
 
 			// _ammoUsageRate = Mathf.Lerp(WeaponSO.AmmoUsageRate, WeaponSO.MaxAmmoUsageRate, _ammoUsageTime);
@@ -119,9 +128,30 @@ namespace Project.WeaponSystems
 
 			}
 
+			if (SpoolUpBeforeFiring)
+			{
+				if (!WeaponStatsBars.Instance.SpoolIsEnabled) WeaponStatsBars.Instance.SpoolIsEnabled = true;
+
+
+				if (!_spooled)
+					WeaponStatsBars.Instance.SpoolFillAmmount = _spoolTime;
+				else
+					WeaponStatsBars.Instance.SpoolFillAmmount = (Mathf.Sin((Time.time - _timeAtDisable) * 30f) + 1 > 1.3f) ? 1 : 0;
+
+			}
+
 			if (_overheatTime <= 0)
 			{
 				_overheated = false;
+			}
+
+			if (Overheat)
+			{
+				if (!WeaponStatsBars.Instance.OverheatIsEnabled) WeaponStatsBars.Instance.OverheatIsEnabled = true;
+				if (!_overheated)
+					WeaponStatsBars.Instance.OverheatFillAmmount = _overheatTime;
+				else
+					WeaponStatsBars.Instance.OverheatFillAmmount = (Mathf.Sin((Time.time - _timeAtDisable) * 30f) + 1 > 1f) ? _overheatTime : 0;
 			}
 
 		}
@@ -138,6 +168,12 @@ namespace Project.WeaponSystems
 				_overheatTime = 0;
 			else
 				_overheatTime -= timeSince;
+
+			WeaponStatsBars.Instance.OverheatIsEnabled = Overheat;
+			WeaponStatsBars.Instance.OverheatFillAmmount = 0;
+
+			WeaponStatsBars.Instance.SpoolIsEnabled = SpoolUpBeforeFiring;
+			WeaponStatsBars.Instance.SpoolFillAmmount = 0;
 		}
 
 		void OnDisable()
@@ -145,6 +181,11 @@ namespace Project.WeaponSystems
 			print("Disabled");
 			StopFiring();
 			StopAllCoroutines();
+
+			WeaponStatsBars.Instance.OverheatIsEnabled = false;
+
+			WeaponStatsBars.Instance.SpoolIsEnabled = false;
+
 			_spoolTime = 0f;
 			_timeAtDisable = Time.time;
 		}
@@ -157,11 +198,12 @@ namespace Project.WeaponSystems
 			if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
 			_beginSpooling = false;
 			if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
+
+
 		}
 
 		public override void FireKeyHeld(bool state)
 		{
-
 
 			if (!state || (_overheated && Overheat))
 			{
@@ -169,12 +211,22 @@ namespace Project.WeaponSystems
 				return;
 			}
 
+			if (SingleFire && _firedShot)
+			{
+				_spoolTime = 0f;
+
+
+				if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
+				_beginSpooling = false;
+				if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
+				return;
+			}
 
 			_beginSpooling = true;
 
 
 
-			if (!weaponAmmo.HasAmmo())
+			if (weaponAmmo != null && !weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
 
@@ -189,6 +241,7 @@ namespace Project.WeaponSystems
 			if ((_overheatTime >= 1) && Overheat)
 			{
 				_overheated = true;
+				_spoolTime = 0f;
 				StopFiring();
 				return;
 			}
@@ -201,7 +254,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponAmmo.StartReducingAmmo();
+				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
 
 				FireProjectile();
 			}
@@ -234,10 +287,10 @@ namespace Project.WeaponSystems
 
 			if (weaponAmmo == null)
 			{
-				throw new NullReferenceException("Cannot use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you need it.");
+				Debug.LogWarning("Are you sure you want to use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you might need it.");
 			}
 
-			weaponAmmo.ResetAllAmmo();
+			if (weaponAmmo != null) weaponAmmo.ResetAllAmmo();
 		}
 
 		public override void AimKeyHeld(bool state)
@@ -247,7 +300,12 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
+			if (weaponAmmo != null) weaponAmmo.Reload();
 
+			if (weaponAudio != null)
+			{
+				weaponAudio.Reload();
+			}
 		}
 
 		public override void SpecialKeyPressed()

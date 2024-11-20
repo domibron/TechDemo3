@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 187
+  controlID: 53
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 135
+  controlID: 54
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 136
+  controlID: 116
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -293,15 +293,15 @@ MonoBehaviour:
     y: 0
     width: 968
     height: 368
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 20}
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
   - {fileID: 20}
   - {fileID: 21}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 19
+    y: 73
     width: 296
     height: 550
   m_SerializedDataModeController:
@@ -435,7 +435,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: ccf3ffffb4a400006ea5000072a50000aaa50000eaa50000
+      m_ExpandedIDs: ecfaffff8aa20000c6a20000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -482,8 +482,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 298
-    y: 19
+    x: 297
+    y: 73
     width: 504
     height: 550
   m_SerializedDataModeController:
@@ -1068,9 +1068,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: -13.670433, y: 4.842117, z: -0.97238827}
+    m_Target: {x: -8.073358, y: 0.67185116, z: -17.296047}
     speed: 2
-    m_Value: {x: 14.888368, y: 14.83978, z: -8.942918}
+    m_Value: {x: -8.073358, y: 0.67185116, z: -17.296047}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1116,13 +1116,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.18837656, y: 0.6683956, z: -0.18074676, w: 0.6966017}
+    m_Target: {x: 0.069006786, y: -0.8248973, z: 0.10330233, w: 0.55161446}
     speed: 2
-    m_Value: {x: -0.0039076568, y: 0.9185998, z: 0.39509824, w: 0.009090246}
+    m_Value: {x: 0.06900101, y: -0.82482827, z: 0.10329369, w: 0.5515683}
   m_Size:
-    m_Target: 1.9795393
+    m_Target: 12.124355
     speed: 2
-    m_Value: 10
+    m_Value: 12.124355
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1175,8 +1175,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Game\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 804
-    y: 19
+    x: 803
+    y: 73
     width: 650
     height: 550
   m_SerializedDataModeController:
@@ -1304,7 +1304,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Weapon Systems/Weapon Functionality
+    - Assets/Prefabs/Weapon Prefabs/Weapon Projectiles/Orb of FIre
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1314,16 +1314,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Scripts/Weapon Systems/Weapon Functionality
+  - Assets/Prefabs/Weapon Prefabs/Weapon Projectiles/Orb of FIre
   m_LastFoldersGridSize: 96
-  m_LastProjectPath: D:\Local Repos\TechDemo3
+  m_LastProjectPath: C:\Users\dommc\Desktop\Repos\GitKraken\TechDemo3
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 89}
-    m_SelectedIDs: 16aa0000
-    m_LastClickedID: 43542
-    m_ExpandedIDs: 0000000044a6000046a60000
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: 62aa0000
+    m_LastClickedID: 43618
+    m_ExpandedIDs: 00000000a4a60000a6a6000038a700003ea7000046a700005aaa00005eaa000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1352,7 +1352,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 81}
     m_SelectedIDs: 7c76ffff
     m_LastClickedID: -35204
-    m_ExpandedIDs: 0000000044a6000046a60000
+    m_ExpandedIDs: 00000000a4a60000a6a60000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1378,8 +1378,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 12a60000
-    m_LastClickedInstanceID: 42514
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c623000082ff0000c078000000d1090010d2090060c90900a0cd0900f0cf0900b0ce090080cb090090cc090070ca0900b69c0000227d0000487d0000f47c0000487500004c750000e2f70000b2e40000e6e900002e870000b67c00008eb3000042a30000c214ffff00000000
     m_RenameOverlay:
@@ -1398,7 +1398,7 @@ MonoBehaviour:
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
-      m_ClientGUIView: {fileID: 12}
+      m_ClientGUIView: {fileID: 0}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -1433,7 +1433,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 19
+    y: 644
     width: 967
     height: 347
   m_SerializedDataModeController:
@@ -1655,8 +1655,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Project\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 969
-    y: 19
+    x: 968
+    y: 644
     width: 485
     height: 347
   m_SerializedDataModeController:
@@ -1693,14 +1693,14 @@ MonoBehaviour:
   m_LastFolders:
   - Assets
   m_LastFoldersGridSize: 51
-  m_LastProjectPath: D:\Local Repos\TechDemo3
+  m_LastProjectPath: C:\Users\dommc\Desktop\Repos\GitKraken\TechDemo3
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 2aa90000
-    m_LastClickedID: 43306
-    m_ExpandedIDs: 0000000044a6000046a60000
+    m_SelectedIDs: a4a60000
+    m_LastClickedID: 42660
+    m_ExpandedIDs: 00000000a4a60000a6a6000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1729,7 +1729,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 7c76ffff
     m_LastClickedID: -35204
-    m_ExpandedIDs: 0000000044a6000046a60000
+    m_ExpandedIDs: 00000000a4a60000a6a60000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1809,8 +1809,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1456
-    y: 19
+    x: 1455
+    y: 73
     width: 464
     height: 918
   m_SerializedDataModeController:

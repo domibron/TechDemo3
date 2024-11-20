@@ -29,7 +29,7 @@ namespace Project.WeaponSystems
 
 		public override string DisplayName => WeaponSO.name;
 
-		public override string AmmoDisplay => weaponAmmo.AmmoString + "\n[" + currentFireMode + "]";
+		public override string AmmoDisplay => weaponAmmo != null ? weaponAmmo.AmmoString + "\n[" + currentFireMode + "]" : "";
 
 
 
@@ -133,7 +133,7 @@ namespace Project.WeaponSystems
 				return;
 			}
 
-			if (!weaponAmmo.HasAmmo())
+			if (weaponAmmo != null && !weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
 
@@ -162,7 +162,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponAmmo.StartReducingAmmo();
+				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
@@ -175,7 +175,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponAmmo.StartReducingAmmo();
+				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
 
 
 				FireWeaponProjectile();
@@ -189,7 +189,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponAmmo.StartReducingAmmo();
+				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
 
 
 				FireWeaponProjectile();
@@ -213,9 +213,9 @@ namespace Project.WeaponSystems
 
 			for (int i = 0; i < BurstAmmount; i++)
 			{
-				if (!weaponAmmo.HasAmmo()) break;
+				if (weaponAmmo != null && !weaponAmmo.HasAmmo()) break;
 
-				weaponAmmo.StartReducingAmmo();
+				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
@@ -270,10 +270,10 @@ namespace Project.WeaponSystems
 
 			if (weaponAmmo == null)
 			{
-				throw new NullReferenceException("Cannot use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you need it.");
+				Debug.LogWarning("Are you sure you want to use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you might need it.");
 			}
 
-			weaponAmmo.ResetAllAmmo();
+			if (weaponAmmo != null) weaponAmmo.ResetAllAmmo();
 		}
 
 		public override void SpecialKeyPressed()
@@ -345,7 +345,7 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
-			weaponAmmo.Reload();
+			if (weaponAmmo != null) weaponAmmo.Reload();
 
 			if (weaponAudio != null)
 			{

@@ -11,6 +11,7 @@ namespace Project.WeaponSystems
 		public WeaponSOBase WeaponSO;
 
 		// Privates
+		[SerializeField]
 		private WeaponProjectileBase weaponProjectile;
 
 		[SerializeField]
@@ -53,6 +54,7 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
+
 			// inspect. or dont.
 		}
 

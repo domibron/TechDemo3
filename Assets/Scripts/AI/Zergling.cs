@@ -15,17 +15,20 @@ namespace Project.AI
 	}
 
 	[RequireComponent(typeof(NavMeshAgent))]
-	public class Zergling : MonoBehaviour, IFreezable
+	public class Zergling : MonoBehaviour, IFreezable, IStunable, IKnockbackable
 	{
 		public float NormalUnFreezTime = 1f;
 
 		public float FullFrozenUnFreezTime = 3f;
 
+		public float KnockbackReductionRate = 0.1f;
 
 
-		float IFreezable.FrozenPercentage => _forzonPercentage;
+		float IFreezable.FrozenPercentage => _forzenPercentage;
 
-		private float _forzonPercentage = 0f;
+		private CharacterController _characterController;
+
+		private float _forzenPercentage = 0f;
 
 		private bool _frozenFully = false;
 
@@ -37,9 +40,13 @@ namespace Project.AI
 
 		private NavMeshPath _path;
 
-		private float _maxSpeed;
+		private float _normalSpeed;
 
 		private float _unfreezTime = 0;
+
+		private float _stunTime = 0;
+
+		private Vector3 _velocityForKnockback = Vector3.zero;
 
 
 		void Start()
@@ -52,10 +59,7 @@ namespace Project.AI
 
 		void Update()
 		{
-			if (_forzonPercentage >= 100f)
-			{
-				_frozenFully = true;
-			}
+
 
 			if (_frozenFully)
 			{
@@ -68,9 +72,21 @@ namespace Project.AI
 			{
 				_unfreezTime -= Time.deltaTime;
 			}
-			else if (_forzonPercentage > 0)
+			else if (_forzenPercentage > 0)
 			{
 				UnFreezeZergling();
+			}
+
+			if (_stunTime > 0)
+			{
+				_stunTime -= Time.deltaTime;
+			}
+
+			if (_velocityForKnockback.magnitude >= 0.1f)
+			{
+				_characterController.Move(_velocityForKnockback * Time.deltaTime);
+
+				_velocityForKnockback += -_velocityForKnockback * KnockbackReductionRate;
 			}
 
 		}
@@ -85,6 +101,7 @@ namespace Project.AI
 		private void CalculateAIThinking()
 		{
 
+
 			_aIAgent.destination = _playerTarget.position;
 		}
 
@@ -93,36 +110,54 @@ namespace Project.AI
 		{
 			_aIAgent = GetComponent<NavMeshAgent>();
 
+			_characterController = GetComponent<CharacterController>();
+
 			_playerTarget = GameObject.FindWithTag("Player").transform;
 
 			_gibs = GetComponent<IGibs>();
 
-			_maxSpeed = _aIAgent.speed;
+			_normalSpeed = _aIAgent.speed;
 
 			InvokeRepeating(nameof(CalculateAIThinking), 0, 0.1f);
 		}
 
 		private void SortZirglingSpeed()
 		{
-			_aIAgent.speed = Mathf.Lerp(_maxSpeed, 0f, _forzonPercentage / 100f);
+
+			if (_forzenPercentage > 0 && !_frozenFully && _stunTime <= 0)
+			{
+				_aIAgent.speed = Mathf.Lerp(_normalSpeed, 0f, _forzenPercentage / 100f);
+
+			}
+			else if (_stunTime > 0 || _frozenFully || _velocityForKnockback.magnitude >= 0.1f)
+			{
+				_aIAgent.speed = 0;
+			}
+			else
+			{
+				_aIAgent.speed = _normalSpeed;
+			}
+
+
 		}
 
 		void IFreezable.Freeze(float percentageIncrease)
 		{
-			_forzonPercentage += percentageIncrease;
+			_forzenPercentage += percentageIncrease;
 
-			if (_forzonPercentage >= 100f)
+			if (_forzenPercentage >= 100f)
 			{
-				_forzonPercentage = 100f;
+				_forzenPercentage = 100f;
 			}
-			else if (_forzonPercentage < 0)
+			else if (_forzenPercentage < 0)
 			{
-				_forzonPercentage = 0;
+				_forzenPercentage = 0;
 			}
 
-			if (_forzonPercentage >= 100f)
+			if (_forzenPercentage >= 100f)
 			{
 				_unfreezTime = FullFrozenUnFreezTime;
+				_frozenFully = true;
 			}
 			else
 			{
@@ -138,9 +173,23 @@ namespace Project.AI
 
 		private void UnFreezeZergling()
 		{
-			_unfreezTime = 0;
-			_forzonPercentage = 0f;
+			if (_forzenPercentage >= 100f) return;
 
+			_unfreezTime = 0;
+			_forzenPercentage = 0f;
+
+
+			_frozenFully = false;
+		}
+
+		void IStunable.Stun(float duration)
+		{
+			_stunTime = duration;
+		}
+
+		void IKnockbackable.Addknockback(Vector3 force)
+		{
+			_velocityForKnockback = force;
 		}
 	}
 }

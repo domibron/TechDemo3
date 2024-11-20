@@ -11,6 +11,8 @@ namespace Project.WeaponSystems
 
 		public float LifeTime = 60f;
 
+		public float Force = 100f;
+
 		private float _damage;
 
 		private float _range;
@@ -35,6 +37,9 @@ namespace Project.WeaponSystems
 		{
 			_damage = damage;
 			_range = range;
+
+
+			GetComponent<Rigidbody>().AddForce(transform.forward * Force, ForceMode.Impulse);
 		}
 	}
 }

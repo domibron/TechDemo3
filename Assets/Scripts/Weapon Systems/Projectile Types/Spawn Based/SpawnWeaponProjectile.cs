@@ -9,7 +9,6 @@ namespace Project.WeaponSystems
 		[Header("Rigidbody Projectile (MUST HAVE A RB)")]
 		public GameObject ProjectileToSpawn;
 
-		public float Force = 100f;
 
 		[Tooltip("Can leave blank for this transform")]
 		public Transform TargetPositionToSpawn;
@@ -33,7 +32,6 @@ namespace Project.WeaponSystems
 
 			projectile.GetComponent<IWeaponProjectileObject>().SetUpPrefab(damage, range);
 
-			projectile.GetComponent<Rigidbody>().AddForce(transform.forward * Force, ForceMode.Impulse);
 		}
 	}
 }

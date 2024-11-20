@@ -16,17 +16,6 @@ namespace Project.WeaponSystems
 
 		public float FreezeIncreaseAmmount = 10f;
 
-		// Start is called before the first frame update
-		void Start()
-		{
-
-		}
-
-		// Update is called once per frame
-		void Update()
-		{
-
-		}
 
 		public override bool HitThisObject(GameObject objectThatWasHit, float damageToObject)
 		{

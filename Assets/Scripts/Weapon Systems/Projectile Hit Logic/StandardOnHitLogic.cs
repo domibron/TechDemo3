@@ -11,21 +11,13 @@ namespace Project.WeaponSystems
 	{
 		public GoreType WeaponGoreType = GoreType.Nothing;
 
+		public float StunDuration = 0f;
+
+		public float KnockBackForce = 0f;
+
 		/*
 		Yes, its getting this bad, that sub, sub, sub, sub, sub systems are getting truned into modules.
 		*/
-
-		// Start is called before the first frame update
-		void Start()
-		{
-
-		}
-
-		// Update is called once per frame
-		void Update()
-		{
-
-		}
 
 		public override bool HitThisObject(GameObject objectThatWasHit, float damageToObject)
 		{
@@ -33,7 +25,13 @@ namespace Project.WeaponSystems
 
 			if (objectThatWasHit.GetComponent<IGibs>() != null) objectThatWasHit.GetComponent<IGibs>().GibsGoreType = WeaponGoreType;
 
-			if (objectThatWasHit.GetComponent<IFreezable>() != null) objectThatWasHit.GetComponent<IFreezable>().UnFreeze();
+			// now now, its just "tempoary" lol.
+
+			objectThatWasHit.GetComponent<IFreezable>()?.UnFreeze();
+
+			objectThatWasHit.GetComponent<IStunable>()?.Stun(StunDuration);
+
+			objectThatWasHit.GetComponent<IKnockbackable>()?.Addknockback((objectThatWasHit.transform.position - transform.position).normalized * KnockBackForce);
 
 			objectThatWasHit.GetComponent<IHealth>()?.DamageHealth(damageToObject);
 

@@ -71,6 +71,8 @@ namespace Project.WeaponSystems
 
 			// if (other.gameObject == null || !other.gameObject.activeSelf) return;
 
+
+
 			_direction = Vector3.Reflect(transform.forward * _rigidbody.velocity.magnitude, other.GetContact(0).normal);
 
 			_rigidbody.velocity = _direction.normalized * other.relativeVelocity.magnitude;

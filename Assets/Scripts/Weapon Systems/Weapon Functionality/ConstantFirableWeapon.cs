@@ -227,6 +227,7 @@ namespace Project.WeaponSystems
 			if (_weaponAmmo != null && !_weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
+				StopFiring();
 
 				return;
 			}

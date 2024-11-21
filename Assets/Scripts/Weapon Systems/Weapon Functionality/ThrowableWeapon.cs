@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Project.WeaponSystems
 {
-	[RequireComponent(typeof(WeaponAmmoPool), typeof(SpawnThrowableWeaponProjectile))]
+	[RequireComponent(typeof(WeaponAmmoPool), typeof(SpawnPysicsWeaponProjectile))]
 	public class ThrowableWeapon : BaseThrowableWeapon
 	{
 
@@ -25,7 +25,7 @@ namespace Project.WeaponSystems
 
 		private WeaponAmmoPool _weaponAmmo;
 
-		private SpawnThrowableWeaponProjectile _weaponProjectile;
+		private SpawnPysicsWeaponProjectile _weaponProjectile;
 
 		private bool _pulledThrowable = false;
 		private bool _thrown = false;
@@ -93,7 +93,7 @@ namespace Project.WeaponSystems
 				{
 					_weaponAmmo.StartReducingAmmo();
 					_timeUntilNextAttack = 1f;
-					_weaponProjectile.StartThrowProjectile(WeaponSO.Damage, WeaponSO.Range, (transform.forward + (transform.up * UpArchAmmount)) * Mathf.Lerp(MinForce, MaxForce, _throwCharge));
+					_weaponProjectile.StartPysProjectile(WeaponSO.Damage, WeaponSO.Range, (transform.forward + (transform.up * UpArchAmmount)) * Mathf.Lerp(MinForce, MaxForce, _throwCharge));
 				}
 
 				_thrown = false;
@@ -133,7 +133,7 @@ namespace Project.WeaponSystems
 
 			_weaponAmmo.ResetAllAmmo();
 
-			_weaponProjectile = GetComponent<SpawnThrowableWeaponProjectile>();
+			_weaponProjectile = GetComponent<SpawnPysicsWeaponProjectile>();
 		}
 
 		public override void GKeyHeld(bool state)

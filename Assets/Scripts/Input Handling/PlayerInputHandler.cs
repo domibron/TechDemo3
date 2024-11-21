@@ -13,6 +13,10 @@ namespace Project.InputHandling
 		public KeyCode ReloadKey = KeyCode.R;
 		public KeyCode SpecialWeaponKey = KeyCode.B;
 
+		public KeyCode Ablility1Key = KeyCode.Q;
+		public KeyCode Ablility2Key = KeyCode.E;
+		public KeyCode Ablility3Key = KeyCode.T;
+
 		public Vector3 GetMovementAsVector3()
 		{
 			return new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));

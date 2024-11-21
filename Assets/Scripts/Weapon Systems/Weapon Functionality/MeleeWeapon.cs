@@ -8,14 +8,13 @@ namespace Project.WeaponSystems
 {
 	public class MeleeWeapon : BaseWeapon
 	{
-		public WeaponSOBase WeaponSO;
 
 		// Privates
 		[SerializeField]
-		private WeaponProjectileBase weaponProjectile;
+		private WeaponProjectileBase _weaponProjectile;
 
 		[SerializeField]
-		private WeaponAudioBase weaponAudio;
+		private WeaponAudioBase _weaponAudio;
 
 		private float _timeUntilNextAttack = 0;
 
@@ -48,7 +47,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
+				_weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
 			}
 		}
 
@@ -70,7 +69,7 @@ namespace Project.WeaponSystems
 				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
 			}
 
-			weaponProjectile = GetComponent<WeaponProjectileBase>();
+			_weaponProjectile = GetComponent<WeaponProjectileBase>();
 		}
 
 		// protected override void FireKeyUpdate(bool state)

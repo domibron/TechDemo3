@@ -7,6 +7,8 @@ namespace Project.WeaponSystems
 {
 	public abstract class BaseWeapon : MonoBehaviour
 	{
+		public WeaponSOBase WeaponSO;
+
 		public abstract string DisplayName { get; }
 		public abstract string AmmoDisplay { get; }
 

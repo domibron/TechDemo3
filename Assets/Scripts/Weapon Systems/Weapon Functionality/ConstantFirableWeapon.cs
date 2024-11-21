@@ -10,11 +10,9 @@ namespace Project.WeaponSystems
 	public class ConstantFirableWeapon : BaseWeapon
 	{
 
-		public WeaponSOBase WeaponSO;
-
 		public override string DisplayName => WeaponSO.name;
 
-		public override string AmmoDisplay => weaponAmmo != null ? weaponAmmo.AmmoString : "";
+		public override string AmmoDisplay => _weaponAmmo != null ? _weaponAmmo.AmmoString : "";
 
 
 
@@ -40,13 +38,13 @@ namespace Project.WeaponSystems
 		public bool SingleFire = false;
 
 
-		private WeaponProjectileBase weaponProjectile;
+		private WeaponProjectileBase _weaponProjectile;
 
 		[SerializeField]
-		private WeaponAudioBase weaponAudio;
+		private WeaponAudioBase _weaponAudio;
 
 		[SerializeField]
-		private WeaponAmmoBase weaponAmmo;
+		private WeaponAmmoBase _weaponAmmo;
 
 
 		private bool _beginSpooling = false;
@@ -195,9 +193,9 @@ namespace Project.WeaponSystems
 			_firedShot = false;
 			_firing = false;
 
-			if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
+			if (_weaponProjectile != null) _weaponProjectile.EndFireProjectile();
 			_beginSpooling = false;
-			if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
+			if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
 
 
 		}
@@ -216,9 +214,9 @@ namespace Project.WeaponSystems
 				_spoolTime = 0f;
 
 
-				if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
+				if (_weaponProjectile != null) _weaponProjectile.EndFireProjectile();
 				_beginSpooling = false;
-				if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
 				return;
 			}
 
@@ -226,7 +224,7 @@ namespace Project.WeaponSystems
 
 
 
-			if (weaponAmmo != null && !weaponAmmo.HasAmmo())
+			if (_weaponAmmo != null && !_weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
 
@@ -254,7 +252,7 @@ namespace Project.WeaponSystems
 			{
 				_timeUntilNextAttack = 1f;
 
-				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
 				FireProjectile();
 			}
@@ -269,28 +267,28 @@ namespace Project.WeaponSystems
 				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
 			}
 
-			weaponAudio = GetComponent<WeaponAudioBase>();
+			_weaponAudio = GetComponent<WeaponAudioBase>();
 
-			if (weaponAudio == null)
+			if (_weaponAudio == null)
 			{
 				Debug.Log("You can add any scripts that inherit " + nameof(WeaponAudioBase) + " to this to play sounds!");
 			}
 
-			weaponProjectile = GetComponent<WeaponProjectileBase>();
+			_weaponProjectile = GetComponent<WeaponProjectileBase>();
 
-			if (weaponProjectile == null)
+			if (_weaponProjectile == null)
 			{
 				throw new NullReferenceException("Cannot use weapon with not projectile script! Please add one that has the " + nameof(WeaponProjectileBase) + " interface attached.");
 			}
 
-			weaponAmmo = GetComponent<WeaponAmmoBase>();
+			_weaponAmmo = GetComponent<WeaponAmmoBase>();
 
-			if (weaponAmmo == null)
+			if (_weaponAmmo == null)
 			{
 				Debug.LogWarning("Are you sure you want to use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you might need it.");
 			}
 
-			if (weaponAmmo != null) weaponAmmo.ResetAllAmmo();
+			if (_weaponAmmo != null) _weaponAmmo.ResetAllAmmo();
 		}
 
 		public override void AimKeyHeld(bool state)
@@ -300,11 +298,11 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
-			if (weaponAmmo != null) weaponAmmo.Reload();
+			if (_weaponAmmo != null) _weaponAmmo.Reload();
 
-			if (weaponAudio != null)
+			if (_weaponAudio != null)
 			{
-				weaponAudio.Reload();
+				_weaponAudio.Reload();
 			}
 		}
 
@@ -317,11 +315,11 @@ namespace Project.WeaponSystems
 
 		protected virtual void FireProjectile()
 		{
-			weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
+			_weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
 
-			if (weaponAudio != null)
+			if (_weaponAudio != null)
 			{
-				weaponAudio.Fire(_firing);
+				_weaponAudio.Fire(_firing);
 			}
 
 			print("BANG!");

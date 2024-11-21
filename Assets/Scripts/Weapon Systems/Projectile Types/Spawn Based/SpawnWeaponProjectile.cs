@@ -13,7 +13,7 @@ namespace Project.WeaponSystems
 		[Tooltip("Can leave blank for this transform")]
 		public Transform TargetPositionToSpawn;
 
-		void Start()
+		protected virtual void Start()
 		{
 			if (TargetPositionToSpawn == null)
 			{

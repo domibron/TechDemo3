@@ -29,11 +29,10 @@ namespace Project.WeaponSystems
 
 		public override string DisplayName => WeaponSO.name;
 
-		public override string AmmoDisplay => weaponAmmo != null ? weaponAmmo.AmmoString + "\n[" + currentFireMode + "]" : "";
+		public override string AmmoDisplay => _weaponAmmo != null ? _weaponAmmo.AmmoString + "\n[" + _currentFireMode + "]" : "";
 
 
 
-		public WeaponSOBase WeaponSO;
 
 		/// <summary>
 		/// Weather the weapon can change the fire mode.
@@ -55,17 +54,17 @@ namespace Project.WeaponSystems
 
 		// Privates
 		[SerializeField]
-		private WeaponProjectileBase weaponProjectile;
+		private WeaponProjectileBase _weaponProjectile;
 
 		[SerializeField]
-		private WeaponAudioBase weaponAudio;
+		private WeaponAudioBase _weaponAudio;
 
 		[SerializeField]
-		private WeaponAmmoBase weaponAmmo;
+		private WeaponAmmoBase _weaponAmmo;
 
 
 
-		private WeaponFireMode currentFireMode;
+		private WeaponFireMode _currentFireMode;
 
 		private float _timeUntilNextAttack = 0;
 
@@ -106,8 +105,8 @@ namespace Project.WeaponSystems
 		private void StopFiring()
 		{
 			_firedShot = false;
-			if (weaponProjectile != null) weaponProjectile.EndFireProjectile();
-			if (weaponAmmo != null) weaponAmmo.StopReducingAmmo();
+			if (_weaponProjectile != null) _weaponProjectile.EndFireProjectile();
+			if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
 		}
 
 		public override void AimKeyHeld(bool state)
@@ -117,10 +116,10 @@ namespace Project.WeaponSystems
 				_isAiming = state;
 
 
-				if (weaponAudio != null)
+				if (_weaponAudio != null)
 				{
-					if (state) weaponAudio.Aim();
-					else weaponAudio.UnAim();
+					if (state) _weaponAudio.Aim();
+					else _weaponAudio.UnAim();
 				}
 			}
 		}
@@ -133,7 +132,7 @@ namespace Project.WeaponSystems
 				return;
 			}
 
-			if (weaponAmmo != null && !weaponAmmo.HasAmmo())
+			if (_weaponAmmo != null && !_weaponAmmo.HasAmmo())
 			{
 				// display - tooltip
 
@@ -158,11 +157,11 @@ namespace Project.WeaponSystems
 
 		private void CheckAndFireAutomatic()
 		{
-			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Automatic)
+			if (_timeUntilNextAttack <= 0 && _currentFireMode == WeaponFireMode.Automatic)
 			{
 				_timeUntilNextAttack = 1f;
 
-				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
@@ -171,11 +170,11 @@ namespace Project.WeaponSystems
 
 		private void CheckAndFireSemiAutomatic()
 		{
-			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.SemiAutomatic && !_firedShot)
+			if (_timeUntilNextAttack <= 0 && _currentFireMode == WeaponFireMode.SemiAutomatic && !_firedShot)
 			{
 				_timeUntilNextAttack = 1f;
 
-				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
 
 				FireWeaponProjectile();
@@ -185,11 +184,11 @@ namespace Project.WeaponSystems
 
 		private void CheckAndFireBolt()
 		{
-			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.BoltAction && !_firedShot)
+			if (_timeUntilNextAttack <= 0 && _currentFireMode == WeaponFireMode.BoltAction && !_firedShot)
 			{
 				_timeUntilNextAttack = 1f;
 
-				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
 
 				FireWeaponProjectile();
@@ -199,7 +198,7 @@ namespace Project.WeaponSystems
 
 		private void CheckAndFireBurst()
 		{
-			if (_timeUntilNextAttack <= 0 && currentFireMode == WeaponFireMode.Burst && !_firedShot)
+			if (_timeUntilNextAttack <= 0 && _currentFireMode == WeaponFireMode.Burst && !_firedShot)
 			{
 				_timeUntilNextAttack = 1f;
 
@@ -213,9 +212,9 @@ namespace Project.WeaponSystems
 
 			for (int i = 0; i < BurstAmmount; i++)
 			{
-				if (weaponAmmo != null && !weaponAmmo.HasAmmo()) break;
+				if (_weaponAmmo != null && !_weaponAmmo.HasAmmo()) break;
 
-				if (weaponAmmo != null) weaponAmmo.StartReducingAmmo();
+				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
 				FireWeaponProjectile();
 
@@ -227,13 +226,13 @@ namespace Project.WeaponSystems
 
 		private void FireWeaponProjectile()
 		{
-			weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
+			_weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
 
 
 
-			if (weaponAudio != null)
+			if (_weaponAudio != null)
 			{
-				weaponAudio.Fire(_firedShot);
+				_weaponAudio.Fire(_firedShot);
 			}
 
 			print("BANG!");
@@ -248,41 +247,41 @@ namespace Project.WeaponSystems
 				throw new NullReferenceException($"HEY! I cannot use nothing for a weapon! please add a {nameof(WeaponSOBase)} to {nameof(WeaponSO)}!");
 			}
 
-			currentFireMode = FireMode;
+			_currentFireMode = FireMode;
 
 
 
-			weaponAudio = GetComponent<WeaponAudio>();
+			_weaponAudio = GetComponent<WeaponAudio>();
 
-			if (weaponAudio == null)
+			if (_weaponAudio == null)
 			{
 				Debug.Log("You can add any scripts that inherit " + nameof(WeaponAudioBase) + " to this to play sounds!");
 			}
 
-			weaponProjectile = GetComponent<WeaponProjectileBase>();
+			_weaponProjectile = GetComponent<WeaponProjectileBase>();
 
-			if (weaponProjectile == null)
+			if (_weaponProjectile == null)
 			{
 				throw new NullReferenceException("Cannot use weapon with not projectile script! Please add one that has the " + nameof(WeaponProjectileBase) + " interface attached.");
 			}
 
-			weaponAmmo = GetComponent<WeaponAmmoBase>();
+			_weaponAmmo = GetComponent<WeaponAmmoBase>();
 
-			if (weaponAmmo == null)
+			if (_weaponAmmo == null)
 			{
 				Debug.LogWarning("Are you sure you want to use weapon with no " + nameof(WeaponAmmoBase) + "! Do you want ammo? cos you might need it.");
 			}
 
-			if (weaponAmmo != null) weaponAmmo.ResetAllAmmo();
+			if (_weaponAmmo != null) _weaponAmmo.ResetAllAmmo();
 		}
 
 		public override void SpecialKeyPressed()
 		{
 			ChangeWeaponFireMode();
 
-			if (weaponAudio != null)
+			if (_weaponAudio != null)
 			{
-				weaponAudio.SpecialAction();
+				_weaponAudio.SpecialAction();
 			}
 		}
 
@@ -295,61 +294,61 @@ namespace Project.WeaponSystems
 			}
 			else if (FireSelect == WeaponFireSelect.SemiAndAutomatic)
 			{
-				if (currentFireMode == WeaponFireMode.Automatic)
+				if (_currentFireMode == WeaponFireMode.Automatic)
 				{
-					currentFireMode = WeaponFireMode.SemiAutomatic;
+					_currentFireMode = WeaponFireMode.SemiAutomatic;
 				}
-				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				else if (_currentFireMode == WeaponFireMode.SemiAutomatic)
 				{
-					currentFireMode = WeaponFireMode.Automatic;
+					_currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
 			else if (FireSelect == WeaponFireSelect.SemiAndBurst)
 			{
-				if (currentFireMode == WeaponFireMode.Burst)
+				if (_currentFireMode == WeaponFireMode.Burst)
 				{
-					currentFireMode = WeaponFireMode.SemiAutomatic;
+					_currentFireMode = WeaponFireMode.SemiAutomatic;
 				}
-				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				else if (_currentFireMode == WeaponFireMode.SemiAutomatic)
 				{
-					currentFireMode = WeaponFireMode.Burst;
+					_currentFireMode = WeaponFireMode.Burst;
 				}
 			}
 			else if (FireSelect == WeaponFireSelect.BurstAndAutomatic)
 			{
-				if (currentFireMode == WeaponFireMode.Automatic)
+				if (_currentFireMode == WeaponFireMode.Automatic)
 				{
-					currentFireMode = WeaponFireMode.Burst;
+					_currentFireMode = WeaponFireMode.Burst;
 				}
-				else if (currentFireMode == WeaponFireMode.Burst)
+				else if (_currentFireMode == WeaponFireMode.Burst)
 				{
-					currentFireMode = WeaponFireMode.Automatic;
+					_currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
 			else if (FireSelect == WeaponFireSelect.SemiAndBurstAndAutomatic)
 			{
-				if (currentFireMode == WeaponFireMode.Automatic)
+				if (_currentFireMode == WeaponFireMode.Automatic)
 				{
-					currentFireMode = WeaponFireMode.Burst;
+					_currentFireMode = WeaponFireMode.Burst;
 				}
-				else if (currentFireMode == WeaponFireMode.Burst)
+				else if (_currentFireMode == WeaponFireMode.Burst)
 				{
-					currentFireMode = WeaponFireMode.SemiAutomatic;
+					_currentFireMode = WeaponFireMode.SemiAutomatic;
 				}
-				else if (currentFireMode == WeaponFireMode.SemiAutomatic)
+				else if (_currentFireMode == WeaponFireMode.SemiAutomatic)
 				{
-					currentFireMode = WeaponFireMode.Automatic;
+					_currentFireMode = WeaponFireMode.Automatic;
 				}
 			}
 		}
 
 		public override void ReloadKeyPressed()
 		{
-			if (weaponAmmo != null) weaponAmmo.Reload();
+			if (_weaponAmmo != null) _weaponAmmo.Reload();
 
-			if (weaponAudio != null)
+			if (_weaponAudio != null)
 			{
-				weaponAudio.Reload();
+				_weaponAudio.Reload();
 			}
 		}
 	}

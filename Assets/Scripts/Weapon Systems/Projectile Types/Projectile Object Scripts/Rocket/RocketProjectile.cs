@@ -7,7 +7,7 @@ namespace Project.WeaponSystems
 	[RequireComponent(typeof(Rigidbody))]
 	public class RocketProjectile : MonoBehaviour, IWeaponProjectileObject
 	{
-		public GameObject ExploationPrefab;
+		public GameObject ExplosionPrefab;
 
 		public float LifeTime = 60f;
 
@@ -27,7 +27,7 @@ namespace Project.WeaponSystems
 		{
 			print("collided");
 
-			GameObject go = Instantiate(ExploationPrefab, transform.position, Quaternion.identity);
+			GameObject go = Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
 			go.GetComponent<IWeaponProjectileObject>().SetUpPrefab(_damage, _range);
 
 			Destroy(this.gameObject);

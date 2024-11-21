@@ -1,0 +1,19 @@
+{
+    "name": "Project.Weapons.SpecialFuntionality",
+    "rootNamespace": "Project.WeaponSystems.SpecialWeaponFuntionality",
+    "references": [
+        "GUID:1cc237fdc2f50c948822740cea7efb63",
+        "GUID:dbe2e6f9654ce954c897b4b74ff17f40",
+        "GUID:3ba46a79d7329f54381961af89bcaef4",
+        "GUID:3f1da9e5d14151049be720847f402075"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

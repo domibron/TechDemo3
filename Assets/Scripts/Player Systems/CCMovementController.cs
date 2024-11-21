@@ -25,6 +25,10 @@ namespace Project.PlayerSystems
 
 		public float DeccelRate = 1;
 
+		public float AirStrafeSpeed = 4;
+
+		public float AirStrafeRate = 1;
+
 		[Header("Jumping")]
 		public Vector3 Gravity = new Vector3(0, -9.81f, 0);
 
@@ -36,7 +40,7 @@ namespace Project.PlayerSystems
 		public Transform CameraHolder;
 
 
-		// Publics but hidden from inspector.
+		// Publics but hidden from inspector. lmao, its not.
 		[Header("No Touch!")]
 		public Vector3 Velocity;
 
@@ -55,6 +59,9 @@ namespace Project.PlayerSystems
 
 		private float _camHeightStanding;
 		private float _camHeightCrouched;
+
+		private bool _movementModified = false;
+		private bool _gravEnabled = false;
 
 
 		void Start()
@@ -77,6 +84,14 @@ namespace Project.PlayerSystems
 			AddMovementToVelocity();
 
 			MovePlayerUsingVelocity(); // ! Must be last. (unless otherwise)
+
+			_movementModified = false;
+			_gravEnabled = true;
+		}
+
+		public bool GetGrounded()
+		{
+			return _isGrounded;
 		}
 
 		#region SetUpMovementController
@@ -94,6 +109,14 @@ namespace Project.PlayerSystems
 		}
 		#endregion
 
+		#region AddToVel
+		public void AddToVelocity(Vector3 velocityToAdd, bool disableGravity = false)
+		{
+			Velocity += velocityToAdd;
+			_movementModified = true;
+			_gravEnabled = !disableGravity;
+		}
+		#endregion
 
 		#region AddMovementToVelocity
 		private void AddMovementToVelocity()
@@ -107,7 +130,7 @@ namespace Project.PlayerSystems
 			Vector3 VelocityWithNoY = Velocity;
 			VelocityWithNoY.y = 0;
 
-			if (inputVector.magnitude != 0 && _isGrounded)
+			if (inputVector.magnitude != 0 && _isGrounded && !_movementModified)
 			{
 				if (_playerInputHandler.GetKey(KeyCode.LeftShift) && Vector3.Dot(inputVector, transform.forward) > MaxStrafeAngle && !_isCrouched)
 				{
@@ -122,9 +145,23 @@ namespace Project.PlayerSystems
 
 
 			}
-			else if (_isGrounded)
+			else if (inputVector.magnitude != 0 && (!_isGrounded || _movementModified))
+			{
+				Vector3 calcVec = (inputVector.normalized * AirStrafeSpeed) * AirStrafeRate * Time.deltaTime;
+
+				// if (calcVec.magnitude < VelocityWithNoY.magnitude) return;
+
+
+				Velocity += calcVec;
+
+
+
+			}
+			else if (_isGrounded && !_movementModified)
 			{
 				Velocity += -VelocityWithNoY * DeccelRate;
+
+				if (Velocity.magnitude < 0.1f) Velocity = Vector3.zero;
 			}
 		}
 		#endregion
@@ -142,6 +179,8 @@ namespace Project.PlayerSystems
 		#region HandleGravity
 		private void HandleGravity()
 		{
+			if (!_gravEnabled) return;
+
 			if (_isGrounded)
 			{
 				if (Velocity.y < Gravity.y)
@@ -163,7 +202,7 @@ namespace Project.PlayerSystems
 		#region HandleJumping
 		private void HandleJumping()
 		{
-			if (_playerInputHandler.GetKeyDown(KeyCode.Space))
+			if (_playerInputHandler.GetKeyDown(KeyCode.Space) && _isGrounded)
 			{
 				float JumpForce = Mathf.Sqrt(2f * JumpHeight * Mathf.Abs(Gravity.y));
 
@@ -237,5 +276,21 @@ namespace Project.PlayerSystems
 			_characterController.Move(Velocity * Time.deltaTime);
 		}
 		#endregion
+
+		void OnCollisionEnter(Collision other)
+		{
+			if (_movementModified)
+			{
+				Velocity = _characterController.velocity;
+			}
+		}
+
+		void OnCollisionStay(Collision other)
+		{
+			if (_movementModified)
+			{
+				Velocity = _characterController.velocity;
+			}
+		}
 	}
 }

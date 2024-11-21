@@ -1,7 +1,9 @@
-using Project.WeaponSystems;
 using UnityEngine;
 
-public abstract class BaseThrowableWeapon : BaseWeapon
+namespace Project.WeaponSystems
 {
-    public abstract void GKeyHeld(bool state);
+	public abstract class BaseThrowableWeapon : BaseWeapon
+	{
+		public abstract void GKeyHeld(bool state);
+	}
 }

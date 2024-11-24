@@ -4,6 +4,7 @@ using Project.Gore;
 using UnityEngine;
 using UnityEngine.AI;
 using Project.StatusEffects;
+using Project.HealthSystems;
 
 namespace Project.AI
 {
@@ -15,7 +16,7 @@ namespace Project.AI
 	}
 
 	[RequireComponent(typeof(NavMeshAgent))]
-	public class Zergling : MonoBehaviour, IFreezable, IStunable, IKnockbackable
+	public class Zergling : MonoBehaviour, IFreezable, IStunable, IKnockbackable, IConvertable
 	{
 		public float NormalUnFreezTime = 1f;
 
@@ -23,6 +24,10 @@ namespace Project.AI
 
 		public float KnockbackReductionRate = 0.1f;
 
+		public float MeleeRange = 1f;
+		public float MeleeDamage = 33f;
+
+		public float AttackTime = 1f;
 
 		float IFreezable.FrozenPercentage => _forzenPercentage;
 
@@ -37,6 +42,7 @@ namespace Project.AI
 		private NavMeshAgent _aIAgent;
 
 		private Transform _playerTarget;
+		private Transform _currentTarget;
 
 		private NavMeshPath _path;
 
@@ -48,6 +54,7 @@ namespace Project.AI
 
 		private Vector3 _velocityForKnockback = Vector3.zero;
 
+		private float _attackTimeCount = 0f;
 
 		void Start()
 		{
@@ -89,6 +96,26 @@ namespace Project.AI
 				_velocityForKnockback += -_velocityForKnockback * KnockbackReductionRate;
 			}
 
+
+			if (_attackTimeCount > 0f)
+			{
+				_attackTimeCount -= Time.deltaTime;
+			}
+
+			// im a idot, forgot to turn int into layermask. im very smart as you can tell.
+			if (Physics.CheckSphere(transform.position, MeleeRange, (1 << StaticData.PLAYER_LAYER)) && _attackTimeCount <= 0f)
+			{
+
+				if (Physics.Raycast(transform.position, (_currentTarget.position - transform.position).normalized, out RaycastHit hit, (_currentTarget.position - transform.position).magnitude, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS_BUT_WITHOUT_PLAYER_IGNORED))
+				{
+					if (hit.transform == _currentTarget)
+					{
+						_currentTarget.GetComponent<IHealth>()?.DamageHealth(MeleeDamage);
+						_attackTimeCount = AttackTime;
+					}
+				}
+			}
+
 		}
 
 		public void KillZergling()
@@ -102,7 +129,7 @@ namespace Project.AI
 		{
 
 
-			_aIAgent.destination = _playerTarget.position;
+			_aIAgent.destination = _currentTarget.position;
 		}
 
 
@@ -113,6 +140,8 @@ namespace Project.AI
 			_characterController = GetComponent<CharacterController>();
 
 			_playerTarget = GameObject.FindWithTag("Player").transform;
+
+			_currentTarget = _playerTarget;
 
 			_gibs = GetComponent<IGibs>();
 
@@ -190,6 +219,11 @@ namespace Project.AI
 		void IKnockbackable.Addknockback(Vector3 force)
 		{
 			_velocityForKnockback = force;
+		}
+
+		void IConvertable.Convert(float duration)
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }

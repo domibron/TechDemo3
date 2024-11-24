@@ -29,6 +29,8 @@ namespace Project.HealthSystems
 		[Header("Death Event (Runs only once)")]
 		public UnityEvent OnDeath;
 
+		public bool DB_Immortal = false;
+
 		// Privates
 		private float _immortalFrameCounter = 0;
 
@@ -44,7 +46,7 @@ namespace Project.HealthSystems
 
 		void Update()
 		{
-			if (_entityDied) return;
+			if (_entityDied && !DB_Immortal) return;
 
 
 			if (_regenDelayCounter >= 0) _regenDelayCounter -= Time.deltaTime;
@@ -66,7 +68,7 @@ namespace Project.HealthSystems
 
 		private void CheckIfDead()
 		{
-			if (CurrentHealth <= 0)
+			if (CurrentHealth <= 0 && !DB_Immortal)
 			{
 				OnDeath.Invoke();
 

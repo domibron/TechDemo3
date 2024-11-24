@@ -16,6 +16,6 @@ namespace Project
 
 		public static int LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS = ~((1 << StaticData.PLAYER_LAYER) | (1 << StaticData.WEAPON_LAYER) | (1 << StaticData.MINIMAP_ICONS));
 
-		public static int LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS_BUT_WITH_PLAYER = ~((1 << StaticData.WEAPON_LAYER) | (1 << StaticData.MINIMAP_ICONS));
+		public static int LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS_BUT_WITHOUT_PLAYER_IGNORED = ~((1 << StaticData.WEAPON_LAYER) | (1 << StaticData.MINIMAP_ICONS));
 	}
 }

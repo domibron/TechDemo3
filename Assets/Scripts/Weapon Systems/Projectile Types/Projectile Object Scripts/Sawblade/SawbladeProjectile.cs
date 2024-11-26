@@ -60,26 +60,12 @@ namespace Project.WeaponSystems
 
 			if (_maxHitsBeforeDesturction <= 0) Destroy(this.gameObject);
 
-			// if (other.gameObject.layer == StaticData.ZIRGLINGS && !GoThoughZerglings) return;
-
-
-
-
-			// if (Physics.Raycast(transform.position, transform.forward * 999f, out RaycastHit hit, 2f, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS_BUT_WITH_PLAYER))
-			// {
-			// print(other.gameObject.activeSelf);
-
-			// if (other.gameObject == null || !other.gameObject.activeSelf) return;
-
-
 
 			_direction = Vector3.Reflect(transform.forward * _rigidbody.velocity.magnitude, other.GetContact(0).normal);
 
 			_rigidbody.velocity = _direction.normalized * other.relativeVelocity.magnitude;
 
 			transform.rotation = Quaternion.LookRotation(_direction);
-
-			// }
 
 		}
 	}

@@ -13,6 +13,14 @@ namespace Project.InputHandling
 		public KeyCode ReloadKey = KeyCode.R;
 		public KeyCode SpecialWeaponKey = KeyCode.B;
 
+		public KeyCode ThrowableHotKey = KeyCode.G;
+
+		public KeyCode AlphaKey1 = KeyCode.Alpha1;
+		public KeyCode AlphaKey2 = KeyCode.Alpha2;
+		public KeyCode AlphaKey3 = KeyCode.Alpha3;
+		public KeyCode AlphaKey4 = KeyCode.Alpha4;
+		public KeyCode AlphaKey5 = KeyCode.Alpha5;
+
 		public KeyCode Ablility1Key = KeyCode.Q;
 		public KeyCode Ablility2Key = KeyCode.E;
 		public KeyCode Ablility3Key = KeyCode.T;

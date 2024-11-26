@@ -74,6 +74,7 @@ namespace Project.WeaponSystems
 					{
 						foreach (GameObject item in currentlyZappedItems)
 						{
+							if (item == null) continue;
 							potentialItems = Physics.OverlapSphere(item.transform.position, MaxArcReachRadius, AllowedLayers);
 
 							if (potentialItems.Length > 0)

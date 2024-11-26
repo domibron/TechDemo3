@@ -17,7 +17,7 @@ namespace Project.WeaponSystems
 
 		public ArcType ProjectileArcDirection;
 
-		public float ArcMaxSpread = .1f;
+		public float ArcDegreesMaxSpread = 45f;
 
 		public int BulletAmmount = 5;
 
@@ -46,7 +46,7 @@ namespace Project.WeaponSystems
 			if (CentreBullet)
 			{
 				if (bulletTotal < 3) bulletTotal = 3;
-				else if (bulletTotal % 2 == 0) bulletTotal++;
+				if (bulletTotal % 2 == 0) bulletTotal++;
 
 				if (Physics.Raycast(transform.position, transform.forward, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))
 				{
@@ -57,8 +57,13 @@ namespace Project.WeaponSystems
 
 				bulletTotal--;
 			}
+			else
+			{
+				if (bulletTotal < 2) bulletTotal = 2;
+				if (bulletTotal % 2 != 0) bulletTotal++;
+			}
 
-			float randomPoint;
+			// float randomPoint;
 			Vector3 rayDirection;
 
 
@@ -66,10 +71,13 @@ namespace Project.WeaponSystems
 			// We get the end of the arc raycasts.
 
 
-			if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcMaxSpread, 0);
-			else randomPoint = GetRadArc(ArcMaxSpread, 0);
+			// if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcDegreesMaxSpread, 0);
+			// else randomPoint = GetRadArc(ArcDegreesMaxSpread, 0);
 
-			rayDirection = transform.forward + transform.right * randomPoint;
+			// rayDirection = transform.forward + transform.right * randomPoint;
+
+			rayDirection = Quaternion.AngleAxis(ArcDegreesMaxSpread, (ProjectileArcDirection == ArcType.Horizontal ? transform.up : transform.right)) * transform.forward;
+
 			// rayDirection = transform.forward;
 			// rayDirection += randomPoint;
 
@@ -83,10 +91,13 @@ namespace Project.WeaponSystems
 			Debug.DrawRay(transform.position, rayDirection * range, Color.blue, 10);
 
 
-			if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcMaxSpread, 1);
-			else randomPoint = GetRadArc(ArcMaxSpread, 1);
+			// if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcDegreesMaxSpread, 1);
+			// else randomPoint = GetRadArc(ArcDegreesMaxSpread, 1);
 
-			rayDirection = transform.forward + transform.right * randomPoint;
+			// rayDirection = transform.forward + transform.right * randomPoint;
+
+			rayDirection = Quaternion.AngleAxis(-ArcDegreesMaxSpread, (ProjectileArcDirection == ArcType.Horizontal ? transform.up : transform.right)) * transform.forward;
+
 			// rayDirection = transform.forward;
 			// rayDirection += randomPoint;
 
@@ -102,29 +113,41 @@ namespace Project.WeaponSystems
 
 			bulletTotal -= 2;
 
-			Vector3 vec = Quaternion.AngleAxis(5f, transform.up) * transform.forward;
-			Vector3 vec2 = Quaternion.AngleAxis(-5f, transform.up) * transform.forward;
+			// Vector3 vec = Quaternion.AngleAxis(5f, transform.up) * transform.forward;
+			// Vector3 vec2 = Quaternion.AngleAxis(-5f, transform.up) * transform.forward;
 
-			Debug.DrawRay(transform.position, vec, Color.yellow, 20f);
-			Debug.DrawRay(transform.position, vec2, Color.yellow, 20f);
+			// Debug.DrawRay(transform.position, vec, Color.yellow, 20f);
+			// Debug.DrawRay(transform.position, vec2, Color.yellow, 20f);
 
 			if (bulletTotal <= 0) return;
 
 
-			float percentageDist = 1f / (bulletTotal + 1);
+			float angle = ArcDegreesMaxSpread / (bulletTotal <= 2 ? bulletTotal : (bulletTotal + 2) / 2f);
+
+			int FlipPoint = bulletTotal / 2;
+
 
 			for (int i = 1; i <= bulletTotal; i++)
 			{
-
-				if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcMaxSpread, percentageDist * i);
-				else randomPoint = GetRadArc(ArcMaxSpread, percentageDist * i);
+				float angleThing;
 
 
-				rayDirection = transform.forward + transform.right * randomPoint;
+				if (i > FlipPoint)
+					angleThing = angle * (i - FlipPoint) * -1f;
+				else
+					angleThing = angle * i;
+
+				// if (ProjectileArcDirection == ArcType.Horizontal) randomPoint = GetRadArc(ArcDegreesMaxSpread, percentageDist * i);
+				// else randomPoint = GetRadArc(ArcDegreesMaxSpread, percentageDist * i);
+
+
+				// rayDirection = transform.forward + transform.right * randomPoint;
 				// rayDirection = transform.forward;
 				// rayDirection += randomPoint;
 
 				//print($"{randomPoint} | {transform.forward} = {rayDirection}");
+
+				rayDirection = Quaternion.AngleAxis(angleThing, (ProjectileArcDirection == ArcType.Horizontal ? transform.up : transform.right)) * transform.forward;
 
 				//raycast
 				if (Physics.Raycast(transform.position, rayDirection, out hit, range, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS))

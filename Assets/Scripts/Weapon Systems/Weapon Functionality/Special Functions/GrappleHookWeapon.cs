@@ -28,7 +28,7 @@ namespace Project.WeaponSystems.SpecialWeaponFuntionality
 		[SerializeField]
 		private ReturnableWeaponProjectileBase _weaponProjectile;
 
-		private CCMovementController _ccMovementController;
+		private MovementController _ccMovementController;
 
 		private Transform _grapplePointTransform;
 		private Vector3 _grapplePointVec;
@@ -224,7 +224,7 @@ namespace Project.WeaponSystems.SpecialWeaponFuntionality
 		{
 			_weaponProjectile = GetComponent<ReturnableWeaponProjectileBase>();
 
-			_ccMovementController = GetComponentInParent<CCMovementController>();
+			_ccMovementController = GetComponentInParent<MovementController>();
 
 			if (GrappleStart == null)
 			{

@@ -27,6 +27,12 @@ namespace Project.WeaponSystems
 		private float _currentAmmoPool;
 
 
+		void OnDisable()
+		{
+			StopAllCoroutines();
+			_isReloading = false;
+		}
+
 		public override bool HasAmmo()
 		{
 			return _currentAmmoInWeapon > 0;

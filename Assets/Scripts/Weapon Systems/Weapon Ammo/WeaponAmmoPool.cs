@@ -16,6 +16,8 @@ namespace Project.WeaponSystems
 
 
 
+
+
 		public override bool HasAmmo()
 		{
 			return _currentAmmo > 0;

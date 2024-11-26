@@ -8,16 +8,18 @@ namespace Project.PlayerSystems
 
 
 	[RequireComponent(typeof(PlayerInputHandler), typeof(CharacterController))]
-	public class CCMovementController : MonoBehaviour
+	public class MovementController : MonoBehaviour
 	{
 
 		//Publics
-		[Header("Legs")]
+		[Header("Sprinting")]
 		public float SprintSpeed = 10;
 
 		public float SprintAccelRate = 1;
 
 		public float MaxStrafeAngle = 0.5f;
+
+		[Header("Walking")]
 
 		public float WalkSpeed = 7;
 
@@ -25,20 +27,32 @@ namespace Project.PlayerSystems
 
 		public float DeccelRate = 1;
 
+		[Header("Air Strafe")]
+
 		public float AirStrafeSpeed = 4;
 
 		public float AirStrafeRate = 1;
 
-		[Header("Jumping")]
+		[Header("Stamina")]
+
+		public float StamUsageRate = 5;
+
+		public float StamRechargeSpeed = 3f;
+
+		[Header("Gravity")]
 		public Vector3 Gravity = new Vector3(0, -9.81f, 0);
 
+		public float IdleGravity = -5;
+
+		[Header("Jump Height")]
+
 		public float JumpHeight = 1f;
+
 
 		[Header("Crouching")]
 		public float CrouchHeight = 1;
 
 		public Transform CameraHolder;
-
 
 		// Publics but hidden from inspector. lmao, its not.
 		[Header("No Touch!")]
@@ -63,6 +77,11 @@ namespace Project.PlayerSystems
 		private bool _movementModified = false;
 		private bool _gravEnabled = false;
 
+		private bool _useStam = false;
+		private bool _drainedStam = false;
+
+		private float _stamBar = 1f;
+
 
 		void Start()
 		{
@@ -71,6 +90,18 @@ namespace Project.PlayerSystems
 
 		void Update()
 		{
+			if (_stamBar > 0 && _useStam)
+			{
+				_stamBar -= Time.deltaTime * (1 / StamUsageRate);
+			}
+			else if (_stamBar < 1 && !_useStam)
+			{
+				_stamBar += Time.deltaTime * (1 / StamRechargeSpeed);
+			}
+
+			if (_stamBar <= 0) _drainedStam = true;
+			else if (_stamBar >= 0.9f) _drainedStam = false;
+
 			HandleGroundCheck();
 
 			HandleJumping();
@@ -132,39 +163,118 @@ namespace Project.PlayerSystems
 
 			if (inputVector.magnitude != 0 && _isGrounded && !_movementModified)
 			{
-				if (_playerInputHandler.GetKey(KeyCode.LeftShift) && Vector3.Dot(inputVector, transform.forward) > MaxStrafeAngle && !_isCrouched)
+				if (_playerInputHandler.GetKey(KeyCode.LeftShift) && Vector3.Dot(inputVector, transform.forward) > MaxStrafeAngle && !_isCrouched && _stamBar > 0 && !_drainedStam)
 				{
-
+					_useStam = true;
 					Velocity += ((inputVector.normalized * SprintSpeed) - VelocityWithNoY) * SprintAccelRate;
+
+
 				}
 				else
 				{
-					Velocity += ((inputVector.normalized * WalkSpeed) - VelocityWithNoY) * WalkAccelRate;
+					_useStam = false;
+					// float mult = Vector3.Dot(Velocity, inputVector.normalized);
 
+					Velocity += ((inputVector.normalized * WalkSpeed) - VelocityWithNoY) * WalkAccelRate;
 				}
 
 
 			}
 			else if (inputVector.magnitude != 0 && (!_isGrounded || _movementModified))
 			{
-				Vector3 calcVec = (inputVector.normalized * AirStrafeSpeed) * AirStrafeRate * Time.deltaTime;
 
-				// if (calcVec.magnitude < VelocityWithNoY.magnitude) return;
+				_useStam = false;
 
+
+				Vector3 calcVec = (inputVector.normalized * AirStrafeSpeed) * AirStrafeRate;
+
+				if (calcVec.magnitude < VelocityWithNoY.magnitude) return;
 
 				Velocity += calcVec;
-
 
 
 			}
 			else if (_isGrounded && !_movementModified)
 			{
+
+				_useStam = false;
+
+
 				Velocity += -VelocityWithNoY * DeccelRate;
 
-				if (Velocity.magnitude < 0.1f) Velocity = Vector3.zero;
+				//if (Velocity.magnitude < 0.1f) Velocity = Vector3.zero;
 			}
+			else
+			{
+				_useStam = false;
+			}
+
+			// if (!_movementModified) ApplyFriction();
 		}
 		#endregion
+
+		// private void Accelerate(Vector3 wishdir, float wishspeed, float accel)
+		// {
+		// 	float addspeed;
+		// 	float accelspeed;
+		// 	float currentspeed;
+
+		// 	currentspeed = Vector3.Dot(Velocity, wishdir);
+		// 	print(currentspeed);
+		// 	addspeed = wishspeed - currentspeed;
+		// 	if (addspeed <= 0)
+		// 	{
+		// 		return;
+		// 	}
+		// 	accelspeed = accel * Time.deltaTime * wishspeed;
+
+		// 	if (accelspeed > addspeed)
+		// 	{
+		// 		accelspeed = addspeed;
+		// 	}
+
+		// 	Velocity += accelspeed * wishdir;
+		// }
+
+		// yes, it was.
+		// private void ApplyFriction()
+		// {
+		// 	float speed;
+		// 	float newspeed;
+		// 	float control;
+		// 	float friction;
+		// 	float drop;
+
+		// 	speed = Velocity.magnitude;
+
+		// 	if (speed < 1)
+		// 	{
+		// 		Velocity.x = 0;
+		// 		Velocity.z = 0;
+		// 		return;
+		// 	}
+
+		// 	drop = 0;
+
+		// 	//apply ground friction
+		// 	if (_isGrounded)
+		// 	{
+		// 		friction = Friction;
+		// 		control = speed < StopSpeed ? StopSpeed : speed;
+		// 		drop += control * friction * Time.deltaTime;
+		// 	}
+
+
+
+		// 	//scale the velocity
+		// 	newspeed = speed - drop;
+		// 	if (newspeed < 0)
+		// 	{
+		// 		newspeed = 0;
+		// 	}
+		// 	newspeed /= speed;
+		// 	Velocity *= newspeed;
+		// }
 
 		#region HandleGroundCheck
 		private void HandleGroundCheck()
@@ -183,9 +293,9 @@ namespace Project.PlayerSystems
 
 			if (_isGrounded)
 			{
-				if (Velocity.y < Gravity.y)
+				if (Velocity.y < IdleGravity)
 				{
-					Velocity.y += Gravity.y - Velocity.y;
+					Velocity.y += IdleGravity - Velocity.y;
 				}
 				else
 				{

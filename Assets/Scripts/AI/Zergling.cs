@@ -29,6 +29,9 @@ namespace Project.AI
 
 		public float AttackTime = 1f;
 
+		public bool AtBarricade = false;
+
+
 		float IFreezable.FrozenPercentage => _forzenPercentage;
 
 		private CharacterController _characterController;
@@ -153,12 +156,12 @@ namespace Project.AI
 		private void SortZirglingSpeed()
 		{
 
-			if (_forzenPercentage > 0 && !_frozenFully && _stunTime <= 0)
+			if (_forzenPercentage > 0 && !_frozenFully && _stunTime <= 0 && !AtBarricade)
 			{
 				_aIAgent.speed = Mathf.Lerp(_normalSpeed, 0f, _forzenPercentage / 100f);
 
 			}
-			else if (_stunTime > 0 || _frozenFully || _velocityForKnockback.magnitude >= 0.1f)
+			else if (_stunTime > 0 || _frozenFully || _velocityForKnockback.magnitude >= 0.1f || AtBarricade)
 			{
 				_aIAgent.speed = 0;
 			}

@@ -15,6 +15,13 @@ namespace Project.WeaponSystems
 		public List<GameObject> WeaponsInInventory = new List<GameObject>();
 
 
+		public GameObject Key4WeaponObject;
+
+
+		public GameObject Key5WeaponObject;
+
+
+
 		public Transform TargetWeaponParent;
 
 
@@ -57,6 +64,7 @@ namespace Project.WeaponSystems
 				CurrentSelectedWeapon.SpecialKeyPressed();
 			}
 
+
 			// if (CurrentSelectedWeapon != null)
 			// {
 			// 	CurrentSelectedWeapon.FireKeyUpdate(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
@@ -69,8 +77,11 @@ namespace Project.WeaponSystems
 			// weapon switching.
 
 			// Fists
-			if (_playerInputHandler.GetKey(KeyCode.Alpha3))
+			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey3))
 			{
+				Key4WeaponObject.SetActive(false);
+				Key5WeaponObject.SetActive(false);
+
 				SwitchWeapon(0);
 			}
 
@@ -80,14 +91,43 @@ namespace Project.WeaponSystems
 
 
 			// weapons
-			if (_playerInputHandler.GetKey(KeyCode.Alpha1))
+			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey1))
 			{
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
+
 				SwitchWeapon(1);
 			}
 
-			if (_playerInputHandler.GetKey(KeyCode.Alpha2))
+			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey2))
 			{
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(2);
+			}
+
+			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey4))
+			{
+				SwitchWeapon(-1);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
+
+				if (Key4WeaponObject != null)
+				{
+					CurrentSelectedWeapon = Key4WeaponObject.GetComponent<BaseWeapon>();
+					Key4WeaponObject.SetActive(true);
+				}
+			}
+
+			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey5))
+			{
+				SwitchWeapon(-1);
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+
+				if (Key5WeaponObject != null)
+				{
+					CurrentSelectedWeapon = Key5WeaponObject.GetComponent<BaseWeapon>();
+					Key5WeaponObject.SetActive(true);
+				}
 			}
 		}
 
@@ -95,6 +135,9 @@ namespace Project.WeaponSystems
 		private void SetUpWeaponManager()
 		{
 			_playerInputHandler = GetComponent<PlayerInputHandler>();
+
+			if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+			if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 
 			if (WeaponsInInventory.Count > 0)
 			{

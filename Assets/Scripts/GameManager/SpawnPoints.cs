@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Project.GameManager
+namespace Project.Managers
 {
 	public class SpawnPoints : MonoBehaviour
 	{

@@ -12,7 +12,7 @@ namespace Project.WeaponSystems
 		//Publics
 		public BaseWeapon CurrentSelectedWeapon;
 
-		public List<GameObject> WeaponsInInventory = new List<GameObject>();
+		public GameObject[] WeaponsInInventory;
 
 
 		public GameObject Key4WeaponObject;
@@ -79,36 +79,32 @@ namespace Project.WeaponSystems
 			// Fists
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey3))
 			{
-				Key4WeaponObject.SetActive(false);
-				Key5WeaponObject.SetActive(false);
 
 				SwitchWeapon(0);
 			}
 
 
 
-			if (WeaponsInInventory.Count <= 0) return;
+			if (WeaponsInInventory.Length <= 0) return;
 
 
 			// weapons
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey1))
 			{
-				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 
 				SwitchWeapon(1);
 			}
 
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey2))
 			{
-				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
+
 				SwitchWeapon(2);
 			}
 
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey4))
 			{
 				SwitchWeapon(-1);
+
 				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 
 				if (Key4WeaponObject != null)
@@ -136,10 +132,7 @@ namespace Project.WeaponSystems
 		{
 			_playerInputHandler = GetComponent<PlayerInputHandler>();
 
-			if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-			if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
-
-			if (WeaponsInInventory.Count > 0)
+			if (WeaponsInInventory.Length > 0)
 			{
 				SwitchWeapon(0);
 			}
@@ -151,35 +144,46 @@ namespace Project.WeaponSystems
 		/// <param name="slot">The slot to attempt to equip</param>
 		private void SwitchWeapon(int slot)
 		{
-			if (WeaponsInInventory.Count < 1 || WeaponsInInventory.Count - 1 < slot) return;
+			if (WeaponsInInventory.Length < 1 || WeaponsInInventory.Length - 1 < slot) return;
 
-			for (int i = 0; i < WeaponsInInventory.Count; i++)
+			if (WeaponsInInventory[slot] == null) return;
+
+			if (slot >= 0)
+			{
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
+			}
+
+			for (int i = 0; i < WeaponsInInventory.Length; i++)
 			{
 				if (i == slot)
 				{
-					WeaponsInInventory[i].SetActive(true);
-					CurrentSelectedWeapon = GetWeaponComponent(i);
+					if (WeaponsInInventory[i] != null)
+					{
+						WeaponsInInventory[i].SetActive(true);
+						CurrentSelectedWeapon = GetWeaponComponent(i);
+					}
 				}
 				else
 				{
-					WeaponsInInventory[i].SetActive(false);
+					if (WeaponsInInventory[i] != null) WeaponsInInventory[i].SetActive(false);
 				}
 			}
 		}
 
 		private void SwitchWeapon()
 		{
-			if (WeaponsInInventory.Count < 1) return;
+			if (WeaponsInInventory.Length < 1) return;
 
 			_currentlySelectedSlot++;
 
 
-			if (_currentlySelectedSlot >= WeaponsInInventory.Count)
+			if (_currentlySelectedSlot >= WeaponsInInventory.Length)
 			{
 				_currentlySelectedSlot = 0;
 			}
 
-			for (int i = 0; i < WeaponsInInventory.Count; i++)
+			for (int i = 0; i < WeaponsInInventory.Length; i++)
 			{
 				if (i == _currentlySelectedSlot)
 				{

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Project.Barricades
 {
-	public class Barricade : MonoBehaviour
+	public class Barricade : MonoBehaviour, IBarricade
 	{
 		public GameObject[] Barricades;
 
@@ -17,7 +17,7 @@ namespace Project.Barricades
 
 		private float _countTime;
 
-		private List<GameObject> _zerglings = new List<GameObject>();
+		private List<Transform> _zerglings = new List<Transform>();
 
 		void Start()
 		{
@@ -32,8 +32,9 @@ namespace Project.Barricades
 				ClearAllMissing();
 				if (other.gameObject.GetComponent<Zergling>() == null) return;
 
-				_zerglings.Add(other.gameObject);
+				_zerglings.Add(other.transform);
 				other.gameObject.GetComponent<Zergling>().AtBarricade = (_barricadesLeft > 0 ? true : false);
+				other.gameObject.GetComponent<Zergling>().BarriacdeTransfom = transform;
 				_count++;
 			}
 		}
@@ -42,13 +43,17 @@ namespace Project.Barricades
 		{
 			if (other.gameObject.CompareTag("Zirgling"))
 			{
+
 				_count--;
-				_zerglings.Remove(other.gameObject);
+
+				_zerglings.Remove(other.transform);
 				ClearAllMissing();
 
 
 				if (other.gameObject.GetComponent<Zergling>() == null) return;
 				other.gameObject.GetComponent<Zergling>().AtBarricade = false;
+				other.gameObject.GetComponent<Zergling>().BarriacdeTransfom = null;
+
 			}
 		}
 
@@ -76,6 +81,8 @@ namespace Project.Barricades
 					if (zirg != null)
 					{
 						zirg.GetComponent<Zergling>().AtBarricade = false;
+						zirg.GetComponent<Zergling>().BarriacdeTransfom = null;
+
 					}
 				}
 
@@ -110,6 +117,18 @@ namespace Project.Barricades
 					Barricades[i].SetActive(false);
 
 				}
+			}
+		}
+
+		void IBarricade.RemoveZirgling(Transform transform)
+		{
+
+
+			if (_zerglings.Remove(transform))
+			{
+				_count--;
+
+
 			}
 		}
 	}

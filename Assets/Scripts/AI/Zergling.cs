@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Project.StatusEffects;
 using Project.HealthSystems;
+using Project.Managers;
 
 namespace Project.AI
 {
@@ -30,11 +31,16 @@ namespace Project.AI
 		public float AttackTime = 1f;
 
 		public bool AtBarricade = false;
+		public Transform BarriacdeTransfom;
+
+
+
+
 
 
 		float IFreezable.FrozenPercentage => _forzenPercentage;
 
-		private CharacterController _characterController;
+		private Rigidbody _rb;
 
 		private float _forzenPercentage = 0f;
 
@@ -58,6 +64,11 @@ namespace Project.AI
 		private Vector3 _velocityForKnockback = Vector3.zero;
 
 		private float _attackTimeCount = 0f;
+
+
+		private float _convertTime = 0f;
+
+
 
 		void Start()
 		{
@@ -94,9 +105,15 @@ namespace Project.AI
 
 			if (_velocityForKnockback.magnitude >= 0.1f)
 			{
-				_characterController.Move(_velocityForKnockback * Time.deltaTime);
+				// _rb.Move(_velocityForKnockback * Time.deltaTime);
 
-				_velocityForKnockback += -_velocityForKnockback * KnockbackReductionRate;
+				// _velocityForKnockback += -_velocityForKnockback * KnockbackReductionRate;
+			}
+
+
+			if (_convertTime > 0f)
+			{
+				_convertTime -= Time.deltaTime;
 			}
 
 
@@ -128,11 +145,37 @@ namespace Project.AI
 			Destroy(this.gameObject);
 		}
 
+		void OnDestroy()
+		{
+			if (BarriacdeTransfom != null)
+			{
+				BarriacdeTransfom.GetComponent<IBarricade>().RemoveZirgling(transform);
+			}
+
+
+			GameManager.Instance.RemoveZirgling();
+		}
+
 		private void CalculateAIThinking()
 		{
+			if (_convertTime > 0)
+			{
+				if (_currentTarget.gameObject != null && _currentTarget.GetComponent<Zergling>()) return;
 
+				Collider[] zirglings = Physics.OverlapSphere(transform.position, 100f, StaticData.ZIRGLINGS);
 
-			_aIAgent.destination = _currentTarget.position;
+				if (zirglings.Length <= 0)
+				{
+					return;
+				}
+
+				_currentTarget = zirglings[0].transform;
+			}
+			else
+			{
+				_currentTarget = _playerTarget;
+				_aIAgent.destination = _currentTarget.position;
+			}
 		}
 
 
@@ -140,7 +183,7 @@ namespace Project.AI
 		{
 			_aIAgent = GetComponent<NavMeshAgent>();
 
-			_characterController = GetComponent<CharacterController>();
+			_rb = GetComponent<Rigidbody>();
 
 			_playerTarget = GameObject.FindWithTag("Player").transform;
 
@@ -221,12 +264,13 @@ namespace Project.AI
 
 		void IKnockbackable.Addknockback(Vector3 force)
 		{
-			_velocityForKnockback = force;
+			// _velocityForKnockback = force;
+			_rb.AddForce(force, ForceMode.Impulse);
 		}
 
 		void IConvertable.Convert(float duration)
 		{
-			throw new System.NotImplementedException();
+			_convertTime = duration;
 		}
 	}
 }

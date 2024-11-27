@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3999594547625672649}
   - component: {fileID: 5893869694234904153}
   - component: {fileID: 4152897160106754684}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 7971667764340796887}
   - component: {fileID: 8711785884439758395}
   - component: {fileID: 4914466803047850301}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1679,7 +1679,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: 0
+        m_ColorSpace: -1
         m_NumColorKeys: 3
         m_NumAlphaKeys: 3
       minGradient:
@@ -5113,7 +5113,7 @@ GameObject:
   - component: {fileID: 4476424106548750344}
   - component: {fileID: 7237894474760370707}
   - component: {fileID: 333390985824361697}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

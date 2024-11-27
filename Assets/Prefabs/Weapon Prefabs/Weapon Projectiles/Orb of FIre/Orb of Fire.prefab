@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4216719132936959976}
   - component: {fileID: 3411719307454488649}
   - component: {fileID: 5651754587962428744}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 7266721034236275946}
   - component: {fileID: 2216820034490802094}
   - component: {fileID: 4617933888598307753}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Orb of Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,6 +163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ZigZagDelay: 3
   Speed: 3
+  MaxCreatureToDamageCount: 3
+  CoolDown: 1
   _hitLogic: {fileID: 2216820034490802094}
 --- !u!114 &2216820034490802094
 MonoBehaviour:
@@ -211,7 +213,7 @@ GameObject:
   - component: {fileID: 2836968662694304370}
   - component: {fileID: 4824778523706059933}
   - component: {fileID: 4535089334972471637}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

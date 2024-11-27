@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-namespace Project.GameManager
+namespace Project.Managers
 {
 	public class GameManager : MonoBehaviour
 	{
@@ -13,6 +14,9 @@ namespace Project.GameManager
 		public float MaxSpawnRadius = 30f;
 
 		public GameObject ZirglingPrefab;
+
+		public TMP_Text RoundDisplay;
+
 
 		private Transform _playerTransform;
 
@@ -53,11 +57,16 @@ namespace Project.GameManager
 		// Update is called once per frame
 		void Update()
 		{
-			if (_currentZirglings < 0 && _playingRound)
+			if (_currentZirglings <= 0 && _playingRound)
 			{
 				_playingRound = false;
 				NextRound();
 			}
+		}
+
+		public void RemoveZirgling()
+		{
+			_currentZirglings--;
 		}
 
 		public void NextRound()
@@ -65,7 +74,10 @@ namespace Project.GameManager
 			_currentRound++;
 			_zirglingSpawned = 0;
 			_playingRound = true;
-			_spawnAmmount = _ammountIncrease + (_currentRound * _currentRound);
+			_spawnAmmount = _ammountIncrease * _currentRound;
+
+			RoundDisplay.text = _currentRound.ToString();
+
 
 			BeginSpawning();
 		}

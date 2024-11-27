@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CryoBlast
   m_EditorClassIdentifier: 
   Name: Cryo Blast
-  Icon: {fileID: 21300000, guid: 01dc3603755d8894db8fe36e3aad9ee7, type: 3}
+  Icon: {fileID: 21300000, guid: 079b6a131382fa347aca88efd0500734, type: 3}
   CoolDown: 300

@@ -1,0 +1,16 @@
+{
+    "name": "Project.Barricades",
+    "rootNamespace": "Project.Barricades",
+    "references": [
+        "GUID:6be5d1402d01fe44d97850ab6dab7279"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

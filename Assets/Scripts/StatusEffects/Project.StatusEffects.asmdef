@@ -1,0 +1,16 @@
+{
+    "name": "Project.StatusEffects",
+    "rootNamespace": "Project.StatusEffects",
+    "references": [
+        "GUID:3f1da9e5d14151049be720847f402075"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

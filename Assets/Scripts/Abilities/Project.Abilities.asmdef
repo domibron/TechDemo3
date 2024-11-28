@@ -1,0 +1,19 @@
+{
+    "name": "Project.Abilities",
+    "rootNamespace": "Project.Abilities",
+    "references": [
+        "GUID:81783953930ae4b43a059fa9c1837647",
+        "GUID:3bbee58349452c543b8f08bb2916827a",
+        "GUID:3ba46a79d7329f54381961af89bcaef4",
+        "GUID:f82a795ad64380f4c8064481e395133a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

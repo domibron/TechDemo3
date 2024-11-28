@@ -1,0 +1,17 @@
+{
+    "name": "Project.PlayerSystems",
+    "rootNamespace": "Project.PlayerSystems",
+    "references": [
+        "GUID:81783953930ae4b43a059fa9c1837647",
+        "GUID:3bbee58349452c543b8f08bb2916827a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

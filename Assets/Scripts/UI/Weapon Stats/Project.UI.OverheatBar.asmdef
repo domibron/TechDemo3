@@ -1,0 +1,14 @@
+{
+    "name": "Project.UI.WeaponStats",
+    "rootNamespace": "Project.UI.WeaponStats",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

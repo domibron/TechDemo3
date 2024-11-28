@@ -38,11 +38,13 @@ namespace Project.WeaponSystems
 			return _currentAmmoInWeapon > 0;
 		}
 
-		public override void Reload()
+		public override bool Reload()
 		{
-			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + (AllowExtraRoundInChamber ? 1 : 0)) return;
+			if (_isReloading || _currentAmmoInWeapon >= MagazineSize + (AllowExtraRoundInChamber ? 1 : 0)) return false;
 
 			StartCoroutine(ReloadOverTime());
+
+			return true;
 		}
 
 		public override void ResetAllAmmo()

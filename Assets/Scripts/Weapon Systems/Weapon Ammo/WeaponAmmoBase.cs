@@ -6,7 +6,7 @@ public abstract class WeaponAmmoBase : MonoBehaviour
 
     public abstract bool HasAmmo();
 
-    public abstract void Reload();
+    public abstract bool Reload();
 
     public abstract void ResetAllAmmo();
 

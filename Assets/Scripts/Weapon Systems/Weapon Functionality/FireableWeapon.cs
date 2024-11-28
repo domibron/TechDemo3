@@ -62,6 +62,8 @@ namespace Project.WeaponSystems
 		[SerializeField]
 		private WeaponAmmoBase _weaponAmmo;
 
+		[SerializeField]
+		private WeaponAnimatorBase _weaponAnimator;
 
 
 		private WeaponFireMode _currentFireMode;
@@ -107,21 +109,24 @@ namespace Project.WeaponSystems
 			_firedShot = false;
 			if (_weaponProjectile != null) _weaponProjectile.EndFireProjectile();
 			if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
+
+			if (_weaponAnimator != null) _weaponAnimator.Fire(false);
 		}
 
 		public override void AimKeyHeld(bool state)
 		{
-			if (_isAiming != state)
+
+			_isAiming = state;
+
+
+			if (_weaponAudio != null)
 			{
-				_isAiming = state;
-
-
-				if (_weaponAudio != null)
-				{
-					if (state) _weaponAudio.Aim();
-					else _weaponAudio.UnAim();
-				}
+				if (state) _weaponAudio.Aim();
+				else _weaponAudio.UnAim();
 			}
+
+
+			if (_weaponAnimator != null) _weaponAnimator.Aim(state);
 		}
 
 		public override void FireKeyHeld(bool state)
@@ -139,6 +144,8 @@ namespace Project.WeaponSystems
 
 				return;
 			}
+
+			if (_weaponAnimator != null) _weaponAnimator.Fire(state);
 
 			CheckAndFireAutomatic();
 
@@ -217,6 +224,9 @@ namespace Project.WeaponSystems
 
 				if (_weaponAmmo != null) _weaponAmmo.StartReducingAmmo();
 
+
+
+
 				FireWeaponProjectile();
 
 				yield return new WaitForSeconds(1 / WeaponSO.FireRate);
@@ -228,6 +238,7 @@ namespace Project.WeaponSystems
 		private void FireWeaponProjectile()
 		{
 			_weaponProjectile.StartFireProjectile(WeaponSO.Damage, WeaponSO.Range);
+
 
 
 
@@ -274,6 +285,14 @@ namespace Project.WeaponSystems
 			}
 
 			if (_weaponAmmo != null) _weaponAmmo.ResetAllAmmo();
+
+			_weaponAnimator = GetComponent<WeaponAnimatorBase>();
+
+			if (_weaponAnimator == null)
+			{
+				Debug.Log("This weapon class supports weapon animations.");
+
+			}
 		}
 
 		public override void SpecialKeyPressed()
@@ -284,6 +303,8 @@ namespace Project.WeaponSystems
 			{
 				_weaponAudio.SpecialAction();
 			}
+
+			if (_weaponAnimator != null) _weaponAnimator.SpecialAction();
 		}
 
 
@@ -345,12 +366,19 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
-			if (_weaponAmmo != null) _weaponAmmo.Reload();
+			if (_weaponAmmo != null)
+			{
+
+				if (!_weaponAmmo.Reload()) return;
+			}
 
 			if (_weaponAudio != null)
 			{
 				_weaponAudio.Reload();
 			}
+
+			if (_weaponAnimator != null) _weaponAnimator.Reload();
+
 		}
 	}
 }

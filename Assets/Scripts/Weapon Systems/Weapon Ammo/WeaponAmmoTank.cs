@@ -21,9 +21,9 @@ namespace Project.WeaponSystems
 			return _currentAmmo > 0;
 		}
 
-		public override void Reload()
+		public override bool Reload()
 		{
-			throw new System.NotImplementedException();
+			return false;
 		}
 
 		public override void ResetAllAmmo()

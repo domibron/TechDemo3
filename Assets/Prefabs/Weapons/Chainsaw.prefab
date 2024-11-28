@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 44572818918297089}
   - component: {fileID: 6301298649260422277}
   - component: {fileID: 3380266028630961809}
-  - component: {fileID: 7513096146842829938}
   m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7513096146842829938
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493972923646237349}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4081917332958211938
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +99,8 @@ GameObject:
   - component: {fileID: 5407647306933901115}
   - component: {fileID: 4160084420920649548}
   - component: {fileID: 2273529661948812988}
+  - component: {fileID: 2015930574746439233}
+  - component: {fileID: 7144386209734339930}
   m_Layer: 6
   m_Name: Chainsaw
   m_TagString: Untagged
@@ -187,6 +167,7 @@ MonoBehaviour:
   WeaponSO: {fileID: 11400000, guid: 9e529a476396913459bffa5371ecc648, type: 2}
   _weaponProjectile: {fileID: 0}
   _weaponAudio: {fileID: 0}
+  _weaponAnimator: {fileID: 0}
 --- !u!95 &4160084420920649548
 Animator:
   serializedVersion: 7
@@ -222,6 +203,120 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponAnimator: {fileID: 4160084420920649548}
+--- !u!82 &2015930574746439233
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4081917332958211938}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7144386209734339930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4081917332958211938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9a626fcbf99d6c479f139c5897bfb79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SFX_WeaponFire: {fileID: 8300000, guid: be9d8516ba578ce4db788a24b7310abc, type: 3}
+  SFX_WeaponAim: {fileID: 0}
+  SFX_WeaponUnAim: {fileID: 0}
+  SFX_WeaponReload: {fileID: 0}
+  SFX_WeaponSpecialAction: {fileID: 0}
 --- !u!1 &4181748928242581377
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +328,6 @@ GameObject:
   - component: {fileID: 1931546849074195085}
   - component: {fileID: 6958813830751354667}
   - component: {fileID: 2556459850651065232}
-  - component: {fileID: 8439727116005617079}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -308,27 +402,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8439727116005617079
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4181748928242581377}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8422847574864370521
 GameObject:
   m_ObjectHideFlags: 0

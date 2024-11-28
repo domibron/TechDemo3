@@ -31,7 +31,7 @@ namespace Project.Gore
 
 		void OnTriggerEnter(Collider other)
 		{
-			if (other.GetComponent<Rigidbody>() != null)
+			if (other.GetComponent<Rigidbody>() != null && !other.CompareTag("Zirgling"))
 			{
 
 				other.attachedRigidbody.AddForce(((other.transform.position - transform.position).normalized * Force) + GetRandomeVector(RandomMinMax), ForceMode.Impulse);

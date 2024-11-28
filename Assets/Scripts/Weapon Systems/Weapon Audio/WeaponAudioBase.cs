@@ -8,4 +8,5 @@ public abstract class WeaponAudioBase : MonoBehaviour
 	public abstract void Reload();
 	public abstract void SpecialAction();
 	public abstract void UnAim();
+	public abstract void SetUpAudio();
 }

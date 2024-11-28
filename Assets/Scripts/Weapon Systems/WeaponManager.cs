@@ -15,10 +15,10 @@ namespace Project.WeaponSystems
 		public GameObject[] WeaponsInInventory;
 
 
-		public GameObject Key4WeaponObject;
+		// public GameObject Key4WeaponObject;
 
 
-		public GameObject Key5WeaponObject;
+		// public GameObject Key5WeaponObject;
 
 
 
@@ -35,6 +35,8 @@ namespace Project.WeaponSystems
 
 		private int _currentlySelectedSlot = 0;
 
+		private bool _scrolled = false;
+
 		void Start()
 		{
 			SetUpWeaponManager();
@@ -44,6 +46,8 @@ namespace Project.WeaponSystems
 
 		void Update()
 		{
+			if (PauseMenu.Instance.IsPaused) return;
+
 			if (CurrentSelectedWeapon != null)
 			{
 				CurrentSelectedWeapon.FireKeyHeld(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
@@ -73,7 +77,35 @@ namespace Project.WeaponSystems
 			// TODO move into another manager, this is UI not weapon inventory manager.
 			UpdateDisplays(); // Updates the display
 
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.AlphaKey1))
+			{
+				SwitchWeapon(false);
+			}
 
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.AlphaKey2))
+			{
+				SwitchWeapon(true);
+
+			}
+
+			if (Input.GetAxis("Mouse ScrollWheel") > 0)
+			{
+				SwitchWeapon(true);
+				_scrolled = true;
+			}
+			else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+			{
+				SwitchWeapon(false);
+				_scrolled = true;
+			}
+			else
+			{
+				_scrolled = false;
+			}
+
+
+			return;
+			/* RIP :skull:
 			// weapon switching.
 
 			// Fists
@@ -128,6 +160,7 @@ namespace Project.WeaponSystems
 					Key5WeaponObject.SetActive(true);
 				}
 			}
+			*/
 		}
 
 
@@ -170,16 +203,21 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		private void SwitchWeapon()
+		private void SwitchWeapon(bool GoUp)
 		{
 			if (WeaponsInInventory.Length < 1) return;
 
-			_currentlySelectedSlot++;
+			if (GoUp) _currentlySelectedSlot++;
+			else _currentlySelectedSlot--;
 
 
 			if (_currentlySelectedSlot >= WeaponsInInventory.Length)
 			{
 				_currentlySelectedSlot = 0;
+			}
+			else if (_currentlySelectedSlot < 0)
+			{
+				_currentlySelectedSlot = WeaponsInInventory.Length - 1;
 			}
 
 			for (int i = 0; i < WeaponsInInventory.Length; i++)

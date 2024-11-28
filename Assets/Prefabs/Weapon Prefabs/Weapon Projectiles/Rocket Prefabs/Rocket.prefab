@@ -161,6 +161,7 @@ MonoBehaviour:
     type: 3}
   LifeTime: 60
   Force: 100
+  ExtraDetectionRange: 0.4
 --- !u!54 &6506616818667669979
 Rigidbody:
   m_ObjectHideFlags: 0

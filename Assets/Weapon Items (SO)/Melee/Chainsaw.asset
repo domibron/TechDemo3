@@ -15,4 +15,4 @@ MonoBehaviour:
   WeaponName: Chainsaw
   Damage: 30
   FireRate: 5
-  Range: 1.5
+  Range: 2

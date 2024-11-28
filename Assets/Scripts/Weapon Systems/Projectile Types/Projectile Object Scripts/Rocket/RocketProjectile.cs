@@ -13,6 +13,8 @@ namespace Project.WeaponSystems
 
 		public float Force = 100f;
 
+		public float ExtraDetectionRange = 1f;
+
 		private float _damage;
 
 		private float _range;
@@ -21,6 +23,19 @@ namespace Project.WeaponSystems
 		{
 			// I dont like the idea that there can be alot of these flying infinitly.
 			Destroy(this.gameObject, LifeTime);
+		}
+
+		void Update()
+		{
+			if (Physics.CheckSphere(transform.position, ExtraDetectionRange, StaticData.ZIRGLINGS))
+			{
+				print("Detected Zirg");
+
+				GameObject go = Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
+				go.GetComponent<IWeaponProjectileObject>().SetUpPrefab(_damage, _range);
+
+				Destroy(this.gameObject);
+			}
 		}
 
 		void OnCollisionEnter(Collision other)

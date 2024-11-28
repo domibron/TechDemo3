@@ -79,7 +79,8 @@ namespace Project.WeaponSystems
 			// Fists
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey3))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(0);
 			}
 
@@ -91,13 +92,15 @@ namespace Project.WeaponSystems
 			// weapons
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey1))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(1);
 			}
 
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey2))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(2);
 			}
 
@@ -146,13 +149,9 @@ namespace Project.WeaponSystems
 		{
 			if (WeaponsInInventory.Length < 1 || WeaponsInInventory.Length - 1 < slot) return;
 
-			if (WeaponsInInventory[slot] == null) return;
+			if ((slot < 0 && slot != -1) || slot >= WeaponsInInventory.Length) return;
 
-			if (slot >= 0)
-			{
-				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
-			}
+
 
 			for (int i = 0; i < WeaponsInInventory.Length; i++)
 			{

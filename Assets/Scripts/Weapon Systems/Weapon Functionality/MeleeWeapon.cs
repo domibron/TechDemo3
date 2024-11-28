@@ -16,6 +16,9 @@ namespace Project.WeaponSystems
 		[SerializeField]
 		private WeaponAudioBase _weaponAudio;
 
+		[SerializeField]
+		private WeaponAnimatorBase _weaponAnimator;
+
 		private float _timeUntilNextAttack = 0;
 
 		public override string DisplayName { get => WeaponSO.name; }
@@ -37,10 +40,13 @@ namespace Project.WeaponSystems
 		public override void AimKeyHeld(bool state)
 		{
 			// Should Do with animations.
+			if (_weaponAnimator != null) _weaponAnimator.Aim(state);
+
 		}
 
 		public override void FireKeyHeld(bool state)
 		{
+			if (_weaponAnimator != null) _weaponAnimator.Fire(state);
 			if (!state) return;
 
 			if (_timeUntilNextAttack <= 0)
@@ -53,12 +59,15 @@ namespace Project.WeaponSystems
 
 		public override void ReloadKeyPressed()
 		{
+			if (_weaponAnimator != null) _weaponAnimator.Reload();
 
 			// inspect. or dont.
 		}
 
 		public override void SpecialKeyPressed()
 		{
+
+			if (_weaponAnimator != null) _weaponAnimator.SpecialAction();
 			// Other special animtion.
 		}
 
@@ -70,6 +79,14 @@ namespace Project.WeaponSystems
 			}
 
 			_weaponProjectile = GetComponent<WeaponProjectileBase>();
+
+			_weaponAnimator = GetComponent<WeaponAnimatorBase>();
+
+			if (_weaponAnimator == null)
+			{
+				Debug.Log("This weapon class supports weapon animations.");
+
+			}
 		}
 
 		// protected override void FireKeyUpdate(bool state)

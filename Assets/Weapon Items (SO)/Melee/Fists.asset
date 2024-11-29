@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fists
   m_EditorClassIdentifier: 
   WeaponName: Fists
-  Damage: 10
+  Damage: 35
   FireRate: 2
-  Range: 1
+  Range: 2

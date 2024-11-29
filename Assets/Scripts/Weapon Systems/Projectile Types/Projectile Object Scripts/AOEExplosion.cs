@@ -17,6 +17,8 @@ namespace Project.WeaponSystems
 		[SerializeField]
 		private ProjectileHitLogicBase _hitLogic;
 
+		[SerializeField]
+		private WeaponAudioBase _weaponAudio;
 
 		private float _damage;
 
@@ -27,6 +29,8 @@ namespace Project.WeaponSystems
 		void Start()
 		{
 			_hitLogic = GetComponent<ProjectileHitLogicBase>();
+			_weaponAudio = GetComponent<WeaponAudioBase>();
+
 
 			if (_hitLogic == null)
 			{
@@ -40,6 +44,7 @@ namespace Project.WeaponSystems
 		{
 			if (!StartImmediately) yield return new WaitForSeconds(Delay);
 
+			if (_weaponAudio != null) _weaponAudio.Fire(true);
 
 			while (_localTime <= 1)
 			{
@@ -56,6 +61,8 @@ namespace Project.WeaponSystems
 		void OnTriggerEnter(Collider other)
 		{
 			_hitLogic.HitThisObject(other.gameObject, _damage);
+
+
 		}
 
 		void IWeaponProjectileObject.SetUpPrefab(float damage, float range)
@@ -63,6 +70,7 @@ namespace Project.WeaponSystems
 			_damage = damage;
 			_radiusAsRange = range;
 
+			_weaponAudio.SetUpAudio();
 			transform.localScale = Vector3.zero;
 			StartCoroutine(Expand());
 		}

@@ -90,6 +90,8 @@ namespace Project.PlayerSystems
 
 		void Update()
 		{
+			if (PauseMenu.Instance.IsPaused) return;
+
 			if (_stamBar > 0 && _useStam)
 			{
 				_stamBar -= Time.deltaTime * (1 / StamUsageRate);

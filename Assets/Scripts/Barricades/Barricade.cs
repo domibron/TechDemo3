@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Project.AI;
@@ -29,7 +30,14 @@ namespace Project.Barricades
 		{
 			if (other.gameObject.CompareTag("Zirgling"))
 			{
-				ClearAllMissing();
+				try
+				{
+					ClearAllMissing();
+				}
+				catch (Exception ex)
+				{
+					Debug.Log("You're killing them too fast!\n" + ex.Message);
+				}
 				if (other.gameObject.GetComponent<Zergling>() == null) return;
 
 				_zerglings.Add(other.transform);
@@ -47,7 +55,14 @@ namespace Project.Barricades
 				_count--;
 
 				_zerglings.Remove(other.transform);
-				ClearAllMissing();
+				try
+				{
+					ClearAllMissing();
+				}
+				catch (Exception ex)
+				{
+					Debug.Log("You're killing them too fast!\n" + ex.Message);
+				}
 
 
 				if (other.gameObject.GetComponent<Zergling>() == null) return;
@@ -70,7 +85,14 @@ namespace Project.Barricades
 				_countTime = PullRate;
 				_barricadesLeft--;
 				UpdateBarricades();
-				ClearAllMissing();
+				try
+				{
+					ClearAllMissing();
+				}
+				catch (Exception ex)
+				{
+					Debug.Log("You're killing them too fast!\n" + ex.Message);
+				}
 
 			}
 

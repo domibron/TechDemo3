@@ -19,6 +19,8 @@ namespace Project.WeaponSystems
 
 		void Start()
 		{
+
+
 			SetUpAudio();
 		}
 
@@ -36,6 +38,7 @@ namespace Project.WeaponSystems
 
 		public override void Fire(bool state)
 		{
+
 			PlayFireAudio();
 		}
 
@@ -49,9 +52,10 @@ namespace Project.WeaponSystems
 			PlaySpecialActionAudio();
 		}
 
-		protected virtual void SetUpAudio()
+		public override void SetUpAudio()
 		{
 			audioSource = GetComponent<AudioSource>();
+			audioSource.loop = false;
 		}
 
 		protected virtual void PlayFireAudio()

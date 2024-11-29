@@ -32,6 +32,8 @@ namespace Project.PlayerSystems
 
 		void Update()
 		{
+			if (PauseMenu.Instance.IsPaused) return;
+
 			HandleLook();
 		}
 

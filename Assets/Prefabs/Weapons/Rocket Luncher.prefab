@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4462832142137614722}
   - component: {fileID: 1971255429593900892}
   - component: {fileID: 4538287668305500218}
-  - component: {fileID: 2596909465412463484}
   m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
@@ -86,27 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2596909465412463484
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451391485734162872}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2464555404964355097
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2635099375516708174}
   m_Layer: 6
-  m_Name: GameObject
+  m_Name: Spawn point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +127,6 @@ GameObject:
   - component: {fileID: 4943817805454106984}
   - component: {fileID: 4419527815794706376}
   - component: {fileID: 7216652323924562496}
-  - component: {fileID: 886862062194465438}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -224,27 +201,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &886862062194465438
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4776057596214802467}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7379138424784258130
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +308,7 @@ MonoBehaviour:
   MagazineSize: 1
   AmmoReductionWhenFired: 1
   AllowExtraRoundInChamber: 0
-  ReloadSpeed: 2.5
+  ReloadSpeed: 3
 --- !u!114 &6817173002329887019
 MonoBehaviour:
   m_ObjectHideFlags: 0

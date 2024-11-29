@@ -11,6 +11,9 @@ scopes = {
 	"last_search.98CF4AA6" = "HitRange"
 	"OpenInspectorPreview.98CF4AA6" = "0"
 	"currentGroup.98CF4AA6" = "scene"
+	"last_search.5A656512" = "ref=\"Assets/Sprites/Main Menu\""
+	"OpenInspectorPreview.5A656512" = "0"
+	"currentGroup.5A656512" = null
 }
 providers = {
 	find = {

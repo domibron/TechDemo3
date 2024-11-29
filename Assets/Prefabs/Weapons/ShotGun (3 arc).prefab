@@ -57,6 +57,7 @@ MonoBehaviour:
   _weaponProjectile: {fileID: 0}
   _weaponAudio: {fileID: 0}
   _weaponAmmo: {fileID: 0}
+  _weaponAnimator: {fileID: 0}
 --- !u!114 &7545914396214829698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,7 +105,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 92133cfba867eec4d879e2bf82fa0274, type: 3}
   m_Resource: {fileID: 8300000, guid: 92133cfba867eec4d879e2bf82fa0274, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.354
+  m_Volume: 0.16
   m_Pitch: 1
   Loop: 0
   Mute: 0

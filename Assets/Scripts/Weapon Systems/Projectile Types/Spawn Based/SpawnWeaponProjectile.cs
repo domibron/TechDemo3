@@ -13,12 +13,16 @@ namespace Project.WeaponSystems
 		[Tooltip("Can leave blank for this transform")]
 		public Transform TargetPositionToSpawn;
 
+		private Transform _camTransform;
+
 		protected virtual void Start()
 		{
 			if (TargetPositionToSpawn == null)
 			{
 				TargetPositionToSpawn = transform;
 			}
+
+			_camTransform = Camera.main.transform;
 		}
 
 		public override void EndFireProjectile()
@@ -28,7 +32,7 @@ namespace Project.WeaponSystems
 
 		public override void StartFireProjectile(float damage, float range)
 		{
-			GameObject projectile = Instantiate(ProjectileToSpawn, TargetPositionToSpawn.position, Quaternion.LookRotation(transform.forward));
+			GameObject projectile = Instantiate(ProjectileToSpawn, TargetPositionToSpawn.position, Quaternion.LookRotation(_camTransform.transform.forward));
 
 			projectile.GetComponent<IWeaponProjectileObject>().SetUpPrefab(damage, range);
 

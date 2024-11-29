@@ -15,10 +15,10 @@ namespace Project.WeaponSystems
 		public GameObject[] WeaponsInInventory;
 
 
-		public GameObject Key4WeaponObject;
+		// public GameObject Key4WeaponObject;
 
 
-		public GameObject Key5WeaponObject;
+		// public GameObject Key5WeaponObject;
 
 
 
@@ -35,6 +35,8 @@ namespace Project.WeaponSystems
 
 		private int _currentlySelectedSlot = 0;
 
+		private bool _scrolled = false;
+
 		void Start()
 		{
 			SetUpWeaponManager();
@@ -44,6 +46,8 @@ namespace Project.WeaponSystems
 
 		void Update()
 		{
+			if (PauseMenu.Instance.IsPaused) return;
+
 			if (CurrentSelectedWeapon != null)
 			{
 				CurrentSelectedWeapon.FireKeyHeld(_playerInputHandler.GetKey(_playerInputHandler.FireKey));
@@ -73,13 +77,42 @@ namespace Project.WeaponSystems
 			// TODO move into another manager, this is UI not weapon inventory manager.
 			UpdateDisplays(); // Updates the display
 
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.AlphaKey1))
+			{
+				SwitchWeapon(false);
+			}
 
+			if (_playerInputHandler.GetKeyDown(_playerInputHandler.AlphaKey2))
+			{
+				SwitchWeapon(true);
+
+			}
+
+			if (Input.GetAxis("Mouse ScrollWheel") > 0)
+			{
+				SwitchWeapon(true);
+				_scrolled = true;
+			}
+			else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+			{
+				SwitchWeapon(false);
+				_scrolled = true;
+			}
+			else
+			{
+				_scrolled = false;
+			}
+
+
+			return;
+			/* RIP :skull:
 			// weapon switching.
 
 			// Fists
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey3))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(0);
 			}
 
@@ -91,13 +124,15 @@ namespace Project.WeaponSystems
 			// weapons
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey1))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(1);
 			}
 
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey2))
 			{
-
+				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
+				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 				SwitchWeapon(2);
 			}
 
@@ -125,6 +160,7 @@ namespace Project.WeaponSystems
 					Key5WeaponObject.SetActive(true);
 				}
 			}
+			*/
 		}
 
 
@@ -142,17 +178,13 @@ namespace Project.WeaponSystems
 		/// Selects the weapon in slot if there is one. 
 		/// </summary>
 		/// <param name="slot">The slot to attempt to equip</param>
-		private void SwitchWeapon(int slot)
+		public void SwitchWeapon(int slot)
 		{
 			if (WeaponsInInventory.Length < 1 || WeaponsInInventory.Length - 1 < slot) return;
 
-			if (WeaponsInInventory[slot] == null) return;
+			if ((slot < 0 && slot != -1) || slot >= WeaponsInInventory.Length) return;
 
-			if (slot >= 0)
-			{
-				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
-			}
+
 
 			for (int i = 0; i < WeaponsInInventory.Length; i++)
 			{
@@ -171,16 +203,21 @@ namespace Project.WeaponSystems
 			}
 		}
 
-		private void SwitchWeapon()
+		private void SwitchWeapon(bool GoUp)
 		{
 			if (WeaponsInInventory.Length < 1) return;
 
-			_currentlySelectedSlot++;
+			if (GoUp) _currentlySelectedSlot++;
+			else _currentlySelectedSlot--;
 
 
 			if (_currentlySelectedSlot >= WeaponsInInventory.Length)
 			{
 				_currentlySelectedSlot = 0;
+			}
+			else if (_currentlySelectedSlot < 0)
+			{
+				_currentlySelectedSlot = WeaponsInInventory.Length - 1;
 			}
 
 			for (int i = 0; i < WeaponsInInventory.Length; i++)

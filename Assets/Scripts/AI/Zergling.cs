@@ -80,7 +80,12 @@ namespace Project.AI
 
 		void Update()
 		{
+			if (PauseMenu.Instance.IsPaused)
+			{
+				_aIAgent.speed = 0;
 
+				return;
+			}
 
 			if (_frozenFully)
 			{
@@ -122,10 +127,20 @@ namespace Project.AI
 				_attackTimeCount -= Time.deltaTime;
 			}
 
-			// im a idot, forgot to turn int into layermask. im very smart as you can tell.
-			if (Physics.CheckSphere(transform.position, MeleeRange, (1 << StaticData.PLAYER_LAYER)) && _attackTimeCount <= 0f)
-			{
+			int layerMask;
 
+			if (_convertTime > 0)
+			{
+				layerMask = (1 << StaticData.ZIRGLINGS);
+			}
+			else
+			{
+				layerMask = (1 << StaticData.PLAYER_LAYER);
+			}
+
+			// im a idot, forgot to turn int into layermask. im very smart as you can tell. // Yes, u dumb // god damm binary shifting.
+			if (Physics.CheckSphere(transform.position, MeleeRange, layerMask) && _attackTimeCount <= 0f)
+			{
 				if (Physics.Raycast(transform.position, (_currentTarget.position - transform.position).normalized, out RaycastHit hit, (_currentTarget.position - transform.position).magnitude, StaticData.LAYER_WITH_IGNORED_PLAYER_RELATED_LAYERS_BUT_WITHOUT_PLAYER_IGNORED))
 				{
 					if (hit.transform == _currentTarget)

@@ -45,6 +45,8 @@ namespace Project.WeaponSystems
 
 		[SerializeField]
 		private WeaponAmmoBase _weaponAmmo;
+		[SerializeField]
+		private WeaponAnimatorBase _weaponAnimator;
 
 
 		private bool _beginSpooling = false;
@@ -197,7 +199,7 @@ namespace Project.WeaponSystems
 			_beginSpooling = false;
 			if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
 
-
+			if (_weaponAnimator != null) _weaponAnimator.Fire(false);
 		}
 
 		public override void FireKeyHeld(bool state)
@@ -209,16 +211,20 @@ namespace Project.WeaponSystems
 				return;
 			}
 
+
+
 			if (SingleFire && _firedShot)
 			{
 				_spoolTime = 0f;
 
-
+				if (_weaponAnimator != null) _weaponAnimator.Fire(false);
 				if (_weaponProjectile != null) _weaponProjectile.EndFireProjectile();
 				_beginSpooling = false;
 				if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
 				return;
 			}
+
+
 
 			_beginSpooling = true;
 
@@ -244,6 +250,8 @@ namespace Project.WeaponSystems
 				StopFiring();
 				return;
 			}
+
+			if (_weaponAnimator != null) _weaponAnimator.Fire(true);
 
 			_firing = true;
 
@@ -290,16 +298,31 @@ namespace Project.WeaponSystems
 			}
 
 			if (_weaponAmmo != null) _weaponAmmo.ResetAllAmmo();
+
+			_weaponAnimator = GetComponent<WeaponAnimatorBase>();
+
+
+			if (_weaponAnimator == null)
+			{
+				Debug.Log("This weapon class supports weapon animations.");
+			}
 		}
 
 		public override void AimKeyHeld(bool state)
 		{
+			if (_weaponAnimator != null) _weaponAnimator.Aim(state);
 
+			// if (_weaponAudio != null)
+			// {
+			// 	_weaponAudio.Reload();
+			// }
 		}
 
 		public override void ReloadKeyPressed()
 		{
 			if (_weaponAmmo != null) _weaponAmmo.Reload();
+
+			if (_weaponAnimator != null) _weaponAnimator.Reload();
 
 			if (_weaponAudio != null)
 			{
@@ -309,7 +332,12 @@ namespace Project.WeaponSystems
 
 		public override void SpecialKeyPressed()
 		{
+			if (_weaponAnimator != null) _weaponAnimator.Reload();
 
+			if (_weaponAudio != null)
+			{
+				_weaponAudio.SpecialAction();
+			}
 		}
 
 

@@ -26,6 +26,9 @@ namespace Project.WeaponSystems
 		[SerializeField]
 		private WeaponAmmoBase _weaponAmmo;
 
+		[SerializeField]
+		private WeaponAnimatorBase _weaponAnimator;
+
 		private float _timeUntilNextAttack = 0;
 
 		private bool _charging = false;
@@ -72,10 +75,15 @@ namespace Project.WeaponSystems
 			_charging = false;
 			if (_weaponPysProjectile != null) _weaponPysProjectile.EndFireProjectile();
 			if (_weaponAmmo != null) _weaponAmmo.StopReducingAmmo();
+
+			if (_weaponAnimator != null) _weaponAnimator.Fire(false);
 		}
 
 		public override void AimKeyHeld(bool state)
 		{
+			if (_weaponAnimator != null) _weaponAnimator.Aim(state);
+
+
 			if (_isAiming != state)
 			{
 				_isAiming = state;
@@ -97,6 +105,7 @@ namespace Project.WeaponSystems
 				{
 					_weaponPysProjectile.StartPysProjectile(WeaponSO.Damage, WeaponSO.Range, transform.forward * Mathf.Lerp(MinChargedForce, MaxChargedForce, _chargeTime));
 					_weaponAmmo.StartReducingAmmo();
+					if (_weaponAnimator != null) _weaponAnimator.Fire(true);
 				}
 
 				StopFiring();
@@ -113,6 +122,7 @@ namespace Project.WeaponSystems
 
 
 			// Fire weapon
+
 
 
 
@@ -154,7 +164,7 @@ namespace Project.WeaponSystems
 
 		public override void SpecialKeyPressed()
 		{
-
+			if (_weaponAnimator != null) _weaponAnimator.SpecialAction();
 		}
 
 
@@ -166,6 +176,7 @@ namespace Project.WeaponSystems
 			{
 				_weaponAudio.Reload();
 			}
+			if (_weaponAnimator != null) _weaponAnimator.Reload();
 		}
 
 	}

@@ -118,12 +118,12 @@ namespace Project.WeaponSystems
 
 			_isAiming = state;
 
-
-			if (_weaponAudio != null)
-			{
-				if (state) _weaponAudio.Aim();
-				else _weaponAudio.UnAim();
-			}
+			// TODO make play once
+			// if (_weaponAudio != null)
+			// {
+			// 	if (state) _weaponAudio.Aim();
+			// 	else _weaponAudio.UnAim();
+			// }
 
 
 			if (_weaponAnimator != null) _weaponAnimator.Aim(state);

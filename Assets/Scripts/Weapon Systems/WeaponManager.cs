@@ -178,7 +178,7 @@ namespace Project.WeaponSystems
 		/// Selects the weapon in slot if there is one. 
 		/// </summary>
 		/// <param name="slot">The slot to attempt to equip</param>
-		private void SwitchWeapon(int slot)
+		public void SwitchWeapon(int slot)
 		{
 			if (WeaponsInInventory.Length < 1 || WeaponsInInventory.Length - 1 < slot) return;
 

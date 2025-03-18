@@ -107,7 +107,7 @@ namespace Project.WeaponSystems
 			return;
 			/* RIP :skull:
 			// weapon switching.
-
+			
 			// Fists
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey3))
 			{
@@ -116,11 +116,11 @@ namespace Project.WeaponSystems
 				SwitchWeapon(0);
 			}
 
-
-
+			
+			
 			if (WeaponsInInventory.Length <= 0) return;
-
-
+			
+			
 			// weapons
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey1))
 			{
@@ -139,7 +139,7 @@ namespace Project.WeaponSystems
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey4))
 			{
 				SwitchWeapon(-1);
-
+				
 				if (Key5WeaponObject != null) Key5WeaponObject.SetActive(false);
 
 				if (Key4WeaponObject != null)
@@ -148,12 +148,12 @@ namespace Project.WeaponSystems
 					Key4WeaponObject.SetActive(true);
 				}
 			}
-
+			
 			if (_playerInputHandler.GetKey(_playerInputHandler.AlphaKey5))
 			{
 				SwitchWeapon(-1);
 				if (Key4WeaponObject != null) Key4WeaponObject.SetActive(false);
-
+				
 				if (Key5WeaponObject != null)
 				{
 					CurrentSelectedWeapon = Key5WeaponObject.GetComponent<BaseWeapon>();
